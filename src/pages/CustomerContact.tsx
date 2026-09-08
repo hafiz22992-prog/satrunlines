@@ -1,0 +1,6 @@
+import { CustomerLayout } from "@/components/CustomerLayout";
+import { Headphones, Mail, MessageCircle } from "lucide-react";
+
+export default function CustomerContact() {
+  return <CustomerLayout><main className="mx-auto max-w-4xl px-4 py-12 sm:px-6"><div className="rounded-[32px] border bg-white p-7 shadow-sm sm:p-10"><p className="text-sm font-black text-[#c89532]">خدمة المسافرين</p><h1 className="mt-1 text-3xl font-black text-[#0b2b55]">تواصل معنا</h1><p className="mt-3 leading-7 text-slate-500">إذا احتجت مساعدة في البحث أو الحجز أو متابعة تذكرتك، استخدم قنوات التواصل المتاحة في المنصة.</p><div className="mt-8 grid gap-4 sm:grid-cols-3"><div className="rounded-2xl bg-slate-50 p-5"><Headphones className="size-6 text-[#0b2b55]"/><p className="mt-3 font-black">دعم المسافرين</p><p className="mt-1 text-xs text-slate-500">مساعدة في خطوات الحجز.</p></div><div className="rounded-2xl bg-slate-50 p-5"><MessageCircle className="size-6 text-[#0b2b55]"/><p className="mt-3 font-black">استفسارات الحجز</p><p className="mt-1 text-xs text-slate-500">تابع تفاصيل حجزك من حسابك.</p></div><div className="rounded-2xl bg-slate-50 p-5"><Mail className="size-6 text-[#0b2b55]"/><p className="mt-3 font-black">المراسلات</p><p className="mt-1 text-xs text-slate-500">ستظهر بيانات التواصل الرسمية هنا.</p></div></div></div></main></CustomerLayout>;
+}
