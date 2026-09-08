@@ -152,3 +152,9 @@
     overflow: hidden;
   }
 }
+
+/* واجهة المسافر: استبدال الصورة القديمة بصورة Coach حديثة أثناء بقاء تصميم الصفحة نفسه. */
+img[alt="حافلة في رحلة عبر الصحراء"] {
+  content: url("https://northscottsdalelimousine.com/images/blog/group/image4.jpg");
+  object-position: center;
+}
