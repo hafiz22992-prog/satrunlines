@@ -37,7 +37,6 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
   --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 }
@@ -153,8 +152,64 @@
   }
 }
 
-/* واجهة المسافر: استبدال الصورة القديمة بصورة Coach حديثة أثناء بقاء تصميم الصفحة نفسه. */
+/* واجهة المسافر: حافلة حديثة من HIGER New V Series بمظهر معاصر للرحلات الطويلة. */
 img[alt="حافلة في رحلة عبر الصحراء"] {
-  content: url("https://northscottsdalelimousine.com/images/blog/group/image4.jpg");
-  object-position: center;
+  content: url("https://higer.oss-cn-hangzhou.aliyuncs.com/2025-02-27/1740640107569_F.jpg");
+  object-position: center 45%;
+  filter: brightness(1.08) contrast(1.12) saturate(1.05);
+}
+
+/* تباين محسّن: النص يبقى مقروءاً والباص واضحاً في الخلفية بدلاً من تغطيته بطبقة داكنة كاملة. */
+main#top > section:first-child > div:nth-of-type(1) {
+  background: linear-gradient(90deg, rgba(4, 20, 45, .9) 0%, rgba(5, 25, 53, .62) 42%, rgba(5, 25, 53, .16) 78%, rgba(5, 25, 53, .04) 100%) !important;
+}
+
+/* اختصار الصفحة: شريط تنقل أيقوني واضح بدل قائمة نصية طويلة. */
+@media (min-width: 1024px) {
+  header nav a {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: #f7f8fb;
+    color: #0b2b55 !important;
+    font-size: 0 !important;
+    transition: transform .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease;
+    box-shadow: inset 0 0 0 1px rgba(11,43,85,.06);
+  }
+  header nav a:hover {
+    transform: translateY(-2px);
+    background: #0b2b55;
+    color: #fff !important;
+    box-shadow: 0 8px 20px rgba(11,43,85,.16);
+  }
+  header nav a::before {
+    font-size: 19px;
+    line-height: 1;
+    font-weight: 700;
+  }
+  header nav a:nth-child(1)::before { content: "⌂"; }
+  header nav a:nth-child(2)::before { content: "↔"; }
+  header nav a:nth-child(3)::before { content: "▣"; }
+  header nav a:nth-child(4)::before { content: "🎟"; font-size: 17px; }
+  header nav a:nth-child(5)::before { content: "?"; }
+}
+
+/* تقليل المساحات الرأسية مع الحفاظ على كل الوظائف. */
+@media (min-width: 768px) {
+  main#top > section:first-child {
+    min-height: 620px !important;
+  }
+  main#top > section:first-child > div:nth-of-type(2) {
+    padding-top: 5.5rem !important;
+    padding-bottom: 8rem !important;
+  }
+  #companies,
+  #trips,
+  #booking {
+    padding-top: 3.25rem !important;
+    padding-bottom: 3.25rem !important;
+  }
 }
