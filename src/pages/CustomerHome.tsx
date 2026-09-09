@@ -3,7 +3,6 @@ import { useLocations } from "@/hooks/use-locations";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import {
-  ArrowLeft,
   BusFront,
   CalendarDays,
   ChevronLeft,
@@ -19,6 +18,7 @@ import {
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
 import { CustomerLayout } from "@/components/CustomerLayout";
+import { TripCard } from "@/components/customer/TripCard";
 
 const HERO_IMAGE =
   "https://en.yutong.com/res/res/2024/3/7/product/productCatPic/8ac292568d4047ec018e16ae18c80031.webp";
@@ -43,11 +43,11 @@ export default function CustomerHome() {
   };
 
   const quickLink = (href: string) => navigate(href);
+  const featuredTrips = (trips ?? []).filter((trip) => trip.active !== false).slice(0, 2);
 
   return (
     <CustomerLayout>
       <main className="bg-[#f6f8fb]">
-        {/* Premium hero: the coach stays visually secondary so the road and landscape remain visible. */}
         <section className="relative overflow-hidden bg-[#061a38]">
           <div className="absolute inset-0">
             <img
@@ -79,7 +79,6 @@ export default function CustomerHome() {
                 <span className="rounded-full border border-white/15 bg-white/10 px-3.5 py-2 backdrop-blur">حجز وتذاكر</span>
               </div>
             </div>
-
             <div className="hidden lg:block" aria-hidden="true" />
           </div>
 
@@ -96,7 +95,7 @@ export default function CustomerHome() {
               <div className="grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto]">
                 <label className="block">
                   <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-black text-slate-600"><MapPin className="size-3.5 text-[#0b2b55]" />من السعودية</span>
-                  <select value={from} onChange={(e) => setFrom(e.target.value)} disabled={citiesLoading} className="h-13 h-[52px] w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-bold text-slate-800 outline-none transition focus:border-[#0b2b55] focus:bg-white focus:ring-4 focus:ring-[#0b2b55]/10">
+                  <select value={from} onChange={(e) => setFrom(e.target.value)} disabled={citiesLoading} className="h-[52px] w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-bold text-slate-800 outline-none transition focus:border-[#0b2b55] focus:bg-white focus:ring-4 focus:ring-[#0b2b55]/10">
                     <option value="">اختر مدينة المغادرة</option>
                     {saudiCities.map((city) => <option key={city} value={city}>{city}</option>)}
                   </select>
@@ -126,8 +125,41 @@ export default function CustomerHome() {
           </div>
         </section>
 
-        {/* Short navigation: each major passenger area has its own page. */}
-        <section className="mx-auto max-w-7xl px-4 pb-10 pt-24 sm:px-6 sm:pt-20">
+        <section className="mx-auto max-w-5xl px-4 pb-8 pt-24 sm:px-6 sm:pt-16">
+          <div className="mb-4 flex items-end justify-between gap-3">
+            <div>
+              <p className="text-sm font-black text-[#c89532]">خيارات السفر</p>
+              <h2 className="mt-1 text-2xl font-black text-[#0b2b55] sm:text-3xl">الرحلات المتاحة</h2>
+            </div>
+            <Link to="/customer/trips" className="inline-flex items-center gap-1 text-sm font-black text-[#3974b9] hover:underline">
+              عرض كل الرحلات
+              <ChevronLeft className="size-4" />
+            </Link>
+          </div>
+
+          {trips === undefined ? (
+            <div className="rounded-[24px] border border-slate-200 bg-white p-8 text-center text-sm font-bold text-slate-500 shadow-sm">
+              جاري تحميل الرحلات…
+            </div>
+          ) : featuredTrips.length === 0 ? (
+            <div className="rounded-[24px] border border-slate-200 bg-white p-8 text-center text-sm font-bold text-slate-500 shadow-sm">
+              لا توجد رحلات منشورة حالياً.
+            </div>
+          ) : (
+            <div className="grid gap-4">
+              {featuredTrips.map((trip) => (
+                <TripCard
+                  key={trip._id}
+                  trip={trip}
+                  companyName={companies?.find((company) => company.slug === trip.companyId)?.name}
+                  vip={trip.totalSeats <= 30}
+                />
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section className="mx-auto max-w-7xl px-4 pb-10 sm:px-6">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             <Link to="/customer/trips" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c]/60 hover:shadow-lg">
               <span className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/7 text-[#0b2b55]"><BusFront className="size-5" /></span>
@@ -135,28 +167,24 @@ export default function CustomerHome() {
               <p className="mt-1 text-xs leading-5 text-slate-500">تصفح وقارن الرحلات المتاحة</p>
               <ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" />
             </Link>
-
             <Link to="/customer/companies" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c]/60 hover:shadow-lg">
               <span className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/7 text-[#0b2b55]"><Building2 className="size-5" /></span>
               <p className="mt-3 font-black text-[#0b2b55]">شركات النقل</p>
               <p className="mt-1 text-xs leading-5 text-slate-500">تعرف على الشركات المستقلة</p>
               <ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" />
             </Link>
-
             <Link to="/customer/booking" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c]/60 hover:shadow-lg">
               <span className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/7 text-[#0b2b55]"><WalletCards className="size-5" /></span>
               <p className="mt-3 font-black text-[#0b2b55]">الحجز</p>
               <p className="mt-1 text-xs leading-5 text-slate-500">أكمل حجز رحلتك بسهولة</p>
               <ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" />
             </Link>
-
             <Link to="/customer/contact" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c]/60 hover:shadow-lg">
               <span className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/7 text-[#0b2b55]"><CircleHelp className="size-5" /></span>
               <p className="mt-3 font-black text-[#0b2b55]">المساعدة</p>
               <p className="mt-1 text-xs leading-5 text-slate-500">تواصل مع المنصة عند الحاجة</p>
               <ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" />
             </Link>
-
             <button type="button" onClick={() => quickLink("/customer/trips")} className="group rounded-2xl border border-[#d6a13c]/30 bg-[#fffaf0] p-4 text-right shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
               <span className="flex size-11 items-center justify-center rounded-xl bg-[#d6a13c]/15 text-[#9b6b17]"><Ticket className="size-5" /></span>
               <p className="mt-3 font-black text-[#0b2b55]">ابدأ الحجز</p>
@@ -183,13 +211,6 @@ export default function CustomerHome() {
               <p className="mt-3 font-black text-[#0b2b55]">خيارات النقل</p>
               <p className="mt-1 text-xs leading-6 text-slate-500">{companies === undefined ? "جاري تحميل الشركات…" : `${companies.length} شركة نقل نشطة متاحة حالياً.`}</p>
             </div>
-          </div>
-        </section>
-
-        <section className="border-t border-slate-200 bg-white">
-          <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-6 text-xs text-slate-500 sm:px-6 md:flex-row md:items-center md:justify-between">
-            <p>خطوط زحل — منصة مقارنة وحجز النقل البري بين السعودية واليمن.</p>
-            <p className="font-bold text-[#0b2b55]">السعودية ← اليمن</p>
           </div>
         </section>
       </main>
