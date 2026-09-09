@@ -44,6 +44,13 @@ function duration(departure?: string, arrival?: string) {
   return mins ? `${toArabicIndic(hours)} س ${toArabicIndic(mins)} د` : `${toArabicIndic(hours)} ساعات`;
 }
 
+function formatTravelDate(value: string) {
+  if (!value) return "اختر تاريخ السفر";
+  const [year, month, day] = value.split("-").map(Number);
+  if (![year, month, day].every(Number.isFinite)) return "اختر تاريخ السفر";
+  return `${toArabicIndic(day)} / ${toArabicIndic(month)} / ${toArabicIndic(year)}`;
+}
+
 export default function Landing() {
   const trips = useQuery(api.trips.list, {});
   const activeCompanies = useQuery(api.companies.listActive);
@@ -149,7 +156,7 @@ export default function Landing() {
             <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_auto]">
               <div><p className="mb-2 text-xs font-bold text-muted-foreground">من السعودية</p><Select value={from} onValueChange={setFrom}><SelectTrigger className="h-12 rounded-xl"><SelectValue placeholder="مدينة المغادرة" /></SelectTrigger><SelectContent><SelectItem value="all">كل المدن</SelectItem>{saudiCities.map((city) => <SelectItem key={city} value={city}>{city}</SelectItem>)}</SelectContent></Select></div>
               <div><p className="mb-2 text-xs font-bold text-muted-foreground">إلى اليمن</p><Select value={to} onValueChange={setTo}><SelectTrigger className="h-12 rounded-xl"><SelectValue placeholder="الوجهة" /></SelectTrigger><SelectContent><SelectItem value="all">كل الوجهات</SelectItem>{yemenCities.map((city) => <SelectItem key={city} value={city}>{city}</SelectItem>)}</SelectContent></Select></div>
-              <div><p className="mb-2 text-xs font-bold text-muted-foreground">تاريخ السفر</p><div className="relative"><CalendarDays className="pointer-events-none absolute right-3 top-3.5 size-4 text-muted-foreground" /><input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="h-12 w-full rounded-xl border bg-background px-10 text-sm outline-none focus:ring-2 focus:ring-ring" /></div></div>
+              <div><p className="mb-2 text-xs font-bold text-muted-foreground">تاريخ السفر</p><div className="relative h-12"><CalendarDays className="pointer-events-none absolute right-3 top-3.5 z-10 size-4 text-muted-foreground" /><div className="pointer-events-none flex h-12 w-full items-center rounded-xl border bg-background px-10 text-sm font-medium"><span className={date ? "text-foreground" : "text-muted-foreground"}>{formatTravelDate(date)}</span></div><input type="date" value={date} onChange={(e) => setDate(e.target.value)} aria-label="اختر تاريخ السفر" className="absolute inset-0 z-20 h-full w-full cursor-pointer opacity-0" /></div></div>
               <Button asChild className="h-12 rounded-xl px-7 font-bold"><Link to={bookingHref}>عرض الرحلات<Search className="size-4" /></Link></Button>
             </div>
           </div>
