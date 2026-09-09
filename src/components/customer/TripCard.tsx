@@ -2,7 +2,6 @@ import {
   Armchair,
   ArrowLeft,
   BatteryCharging,
-  BusFront,
   CalendarDays,
   Clock3,
   MapPin,
@@ -80,7 +79,6 @@ export function TripCard({
     <article className="group overflow-hidden rounded-[24px] border border-[#dce5ef] bg-white shadow-[0_10px_30px_rgba(11,43,85,.07)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_42px_rgba(11,43,85,.12)]">
       <div className="relative p-4 sm:p-5">
         <div className="grid gap-4 lg:grid-cols-[150px_minmax(0,1fr)_220px] lg:items-stretch">
-          {/* Departure widget — the prominent visual element requested in the reference. */}
           <div className="order-1 rounded-[20px] bg-[#f5f8fc] p-4 text-center ring-1 ring-inset ring-[#dce5ef] lg:flex lg:flex-col lg:items-center lg:justify-center">
             <div className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-[#0b2b55] text-white shadow-lg shadow-[#0b2b55]/15">
               <MapPin className="size-6" strokeWidth={2.5} />
@@ -94,7 +92,6 @@ export function TripCard({
             )}
           </div>
 
-          {/* Main route information. */}
           <div className="order-2 min-w-0">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0">
@@ -157,7 +154,6 @@ export function TripCard({
             </div>
           </div>
 
-          {/* Price / action column. */}
           <div className="order-3 flex flex-col justify-between rounded-[20px] bg-[#f8fbff] p-4 ring-1 ring-inset ring-[#dce5ef]">
             <div>
               <p className="text-[11px] font-bold text-slate-400">سعر التذكرة</p>
@@ -183,7 +179,6 @@ export function TripCard({
           </div>
         </div>
 
-        {/* Service strip — visual treatment aligned with the supplied reference. */}
         <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3 text-[11px] font-bold text-slate-500">
           <span className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 px-2.5 py-1.5" title="Wi-Fi">
             <Wifi className="size-4 text-[#3974b9]" />
