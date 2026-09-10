@@ -27,6 +27,70 @@ function RouteLoading() {
   return <div className="min-h-screen flex items-center justify-center"><div className="animate-pulse text-muted-foreground">Loading...</div></div>;
 }
 
+function installStableDateDisplay() {
+  const formatDate = (value: string) => {
+    const [year, month, day] = value.split("-");
+    return year && month && day ? `${day} / ${month} / ${year}` : "اختر تاريخ السفر";
+  };
+
+  const enhance = (input: HTMLInputElement) => {
+    if (input.type !== "date" || input.dataset.slDateDisplay === "true") return;
+    if (input.closest("[data-sl-date-custom]")) return;
+    if (window.getComputedStyle(input).opacity === "0") return;
+
+    const parent = input.parentElement;
+    if (!parent) return;
+
+    parent.style.position = parent.style.position || "relative";
+    input.dataset.slDateDisplay = "true";
+    input.style.color = "transparent";
+    input.style.caretColor = "transparent";
+
+    const display = document.createElement("span");
+    display.textContent = formatDate(input.value);
+    display.setAttribute("aria-hidden", "true");
+    display.className = "sl-date-display";
+
+    const computed = window.getComputedStyle(input);
+    Object.assign(display.style, {
+      position: "absolute",
+      inset: "0",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      padding: computed.padding,
+      boxSizing: "border-box",
+      pointerEvents: "none",
+      font: computed.font,
+      fontWeight: computed.fontWeight,
+      color: input.value ? computed.color : "#94a3b8",
+      background: "transparent",
+      direction: "ltr",
+      textAlign: "right",
+      zIndex: "1",
+    });
+
+    parent.appendChild(display);
+
+    const sync = () => {
+      display.textContent = formatDate(input.value);
+      display.style.color = input.value ? computed.color : "#94a3b8";
+    };
+
+    input.addEventListener("change", sync);
+    input.addEventListener("input", sync);
+    sync();
+  };
+
+  const scan = () => {
+    document.querySelectorAll<HTMLInputElement>('input[type="date"]').forEach(enhance);
+  };
+
+  scan();
+  const observer = new MutationObserver(scan);
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+
 class RootErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; message: string; stack: string }> {
   state = { hasError: false, message: "", stack: "" };
   static getDerivedStateFromError(error: Error) { return { hasError: true, message: error.message || "Unknown runtime error", stack: error.stack || "" }; }
@@ -82,3 +146,5 @@ createRoot(document.getElementById("root")!).render(
     </RootErrorBoundary>
   </StrictMode>,
 );
+
+installStableDateDisplay();
