@@ -1,216 +1,135 @@
 import { Button } from "@/components/ui/button";
-import { useLocations } from "@/hooks/use-locations";
+import { useLocations } from "@/hooks/useLocations";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
-import {
-  BusFront,
-  CalendarDays,
-  ChevronLeft,
-  CircleHelp,
-  Compass,
-  MapPin,
-  Search,
-  ShieldCheck,
-  Ticket,
-  Building2,
-  WalletCards,
-} from "lucide-react";
+import { BusFront, CalendarDays, ChevronLeft, CircleHelp, Compass, MapPin, Search, ShieldCheck, Ticket, Building2, WalletCards } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
-import { CustomerLayout } from "@/components/CustomerLayout";
-import { TripCard } from "@/components/customer/TripCard";
+import CustomerLayout from "@/components/customer/CustomerLayout";
+import TripCard from "@/components/customer/TripCard";
 
-const HERO_IMAGE =
-  "https://en.yutong.com/res/res/2024/3/7/product/productCatPic/8ac292568d4047ec018e16ae18c80031.webp";
+const HERO_IMAGE = "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1800&q=85";
+
+function formatTravelDate(value: string) {
+  if (!value) return "اختر تاريخ السفر";
+  const [year, month, day] = value.split("-");
+  if (!year || !month || !day) return "اختر تاريخ السفر";
+  return `${day} / ${month} / ${year}`;
+}
 
 export default function CustomerHome() {
   const navigate = useNavigate();
-  const { saudiCities, yemenCities, isLoading: citiesLoading } = useLocations();
-  const trips = useQuery(api.trips.list, {});
-  const companies = useQuery(api.companies.listActive);
-
+  const { saudiCities, yemenGovernorates } = useLocations();
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [date, setDate] = useState("");
 
-  const search = (event: FormEvent<HTMLFormElement>) => {
+  const trips = useQuery(api.trips.list, {
+    fromCityId: from || undefined,
+    toGovernorateId: to || undefined,
+    date: date || undefined,
+  });
+  const companies = useQuery(api.companies.listActive, {});
+
+  const submitSearch = (event: FormEvent) => {
     event.preventDefault();
     const params = new URLSearchParams();
     if (from) params.set("from", from);
     if (to) params.set("to", to);
     if (date) params.set("date", date);
-    navigate(`/customer/trips${params.toString() ? `?${params.toString()}` : ""}`);
+    navigate(`/customer/trips${params.toString() ? `?${params}` : ""}`);
   };
-
-  const quickLink = (href: string) => navigate(href);
-  const featuredTrips = (trips ?? []).filter((trip) => trip.active !== false).slice(0, 2);
 
   return (
     <CustomerLayout>
-      <main className="bg-[#f6f8fb]">
-        <section className="relative overflow-hidden bg-[#061a38]">
+      <main dir="rtl" className="min-h-screen bg-slate-50">
+        <section className="relative overflow-hidden bg-[#071d38] text-white">
           <div className="absolute inset-0">
-            <img
-              src={HERO_IMAGE}
-              alt="حافلة سفر حديثة على طريق مفتوح"
-              className="h-full min-h-[570px] w-full object-cover object-center"
-            />
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,17,39,.96)_0%,rgba(5,25,53,.82)_30%,rgba(5,25,53,.38)_58%,rgba(5,25,53,.08)_100%)]" />
-            <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(3,17,39,.94)_0%,transparent_48%,rgba(3,17,39,.18)_100%)]" />
+            <img src={HERO_IMAGE} alt="حافلة للنقل البري" className="h-full w-full object-cover opacity-35" />
+            <div className="absolute inset-0 bg-gradient-to-l from-[#071d38]/95 via-[#071d38]/80 to-[#071d38]/55" />
           </div>
-
-          <div className="relative mx-auto grid min-h-[570px] max-w-7xl items-center gap-8 px-4 pb-32 pt-16 sm:px-6 lg:grid-cols-[.92fr_1.08fr]">
-            <div className="max-w-xl text-white">
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-black backdrop-blur-md">
-                <Compass className="size-4 text-[#f2c45f]" />
-                منصة مقارنة وحجز النقل البري
+          <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+            <div className="max-w-3xl">
+              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-bold backdrop-blur">
+                <Compass className="size-4" /> منصة مقارنة وحجز النقل البري
               </div>
-              <h1 className="text-4xl font-black leading-[1.12] tracking-tight sm:text-5xl lg:text-6xl">
-                رحلتك القادمة
-                <br />
-                <span className="text-[#f2c45f]">تبدأ من هنا</span>
-              </h1>
-              <p className="mt-5 max-w-lg text-sm leading-8 text-white/78 sm:text-base">
-                ابحث عن الرحلات المنشورة، قارن شركات النقل المستقلة، واختر الرحلة التي تناسبك من مكان واحد.
+              <h1 className="text-3xl font-black leading-tight sm:text-5xl">رحلتك القادمة تبدأ من هنا</h1>
+              <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-200 sm:text-base">
+                قارن الرحلات المتاحة من شركات النقل المستقلة، اختر الأنسب لك، ثم أكمل حجزك بسهولة من خلال منصة خطوط زحل.
               </p>
-              <div className="mt-6 flex flex-wrap gap-2.5 text-xs font-bold">
-                <span className="rounded-full border border-white/15 bg-white/10 px-3.5 py-2 backdrop-blur">شركات نقل مستقلة</span>
-                <span className="rounded-full border border-white/15 bg-white/10 px-3.5 py-2 backdrop-blur">أسعار ومقاعد الرحلة</span>
-                <span className="rounded-full border border-white/15 bg-white/10 px-3.5 py-2 backdrop-blur">حجز وتذاكر</span>
-              </div>
             </div>
-            <div className="hidden lg:block" aria-hidden="true" />
-          </div>
 
-          <div className="absolute inset-x-0 bottom-0 z-10 px-4 sm:px-6">
-            <form onSubmit={search} className="mx-auto max-w-7xl rounded-[26px] border border-white/70 bg-white p-4 shadow-[0_24px_70px_rgba(1,15,36,.3)] sm:p-5">
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <div>
-                  <h2 className="text-base font-black text-[#082750] sm:text-lg">ابحث عن رحلتك</h2>
-                  <p className="mt-1 text-[11px] text-slate-500">اختر مدينة المغادرة والوصول وتاريخ السفر</p>
+            <form onSubmit={submitSearch} className="mt-10 grid gap-3 rounded-2xl border border-white/10 bg-white p-3 text-slate-900 shadow-2xl sm:grid-cols-2 lg:grid-cols-4">
+              <label className="block">
+                <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-black text-slate-600"><MapPin className="size-3.5 text-[#0b2b55]" />مدينة المغادرة</span>
+                <select value={from} onChange={(e) => setFrom(e.target.value)} className="h-[52px] w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-bold outline-none focus:border-[#0b2b55] focus:bg-white focus:ring-4 focus:ring-[#0b2b55]/10">
+                  <option value="">اختر مدينة المغادرة</option>
+                  {saudiCities?.map((city: any) => <option key={city._id} value={city._id}>{city.name}</option>)}
+                </select>
+              </label>
+
+              <label className="block">
+                <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-black text-slate-600"><MapPin className="size-3.5 text-[#0b2b55]" />الوجهة</span>
+                <select value={to} onChange={(e) => setTo(e.target.value)} className="h-[52px] w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-bold outline-none focus:border-[#0b2b55] focus:bg-white focus:ring-4 focus:ring-[#0b2b55]/10">
+                  <option value="">اختر المحافظة اليمنية</option>
+                  {yemenGovernorates?.map((governorate: any) => <option key={governorate._id} value={governorate._id}>{governorate.name}</option>)}
+                </select>
+              </label>
+
+              <label className="block">
+                <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-black text-slate-600"><CalendarDays className="size-3.5 text-[#0b2b55]" />تاريخ السفر</span>
+                <div className="relative h-[52px] overflow-hidden rounded-xl border border-slate-200 bg-slate-50 focus-within:border-[#0b2b55] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#0b2b55]/10">
+                  <div aria-hidden="true" className={`pointer-events-none absolute inset-0 z-10 flex items-center justify-end px-3 text-sm font-bold ${date ? "text-slate-800" : "text-slate-400"}`} dir="ltr">
+                    {formatTravelDate(date)}
+                  </div>
+                  <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    min={new Date().toISOString().slice(0, 10)}
+                    aria-label="اختر تاريخ السفر"
+                    className="absolute inset-0 z-20 h-full w-full cursor-pointer opacity-0"
+                  />
                 </div>
-                <Search className="hidden size-5 text-[#c99737] sm:block" />
-              </div>
+              </label>
 
-              <div className="grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto]">
-                <label className="block">
-                  <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-black text-slate-600"><MapPin className="size-3.5 text-[#0b2b55]" />من السعودية</span>
-                  <select value={from} onChange={(e) => setFrom(e.target.value)} disabled={citiesLoading} className="h-[52px] w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-bold text-slate-800 outline-none transition focus:border-[#0b2b55] focus:bg-white focus:ring-4 focus:ring-[#0b2b55]/10">
-                    <option value="">اختر مدينة المغادرة</option>
-                    {saudiCities.map((city) => <option key={city} value={city}>{city}</option>)}
-                  </select>
-                </label>
-
-                <label className="block">
-                  <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-black text-slate-600"><MapPin className="size-3.5 text-emerald-700" />إلى اليمن</span>
-                  <select value={to} onChange={(e) => setTo(e.target.value)} disabled={citiesLoading} className="h-[52px] w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-bold text-slate-800 outline-none transition focus:border-[#0b2b55] focus:bg-white focus:ring-4 focus:ring-[#0b2b55]/10">
-                    <option value="">اختر مدينة الوصول</option>
-                    {yemenCities.map((city) => <option key={city} value={city}>{city}</option>)}
-                  </select>
-                </label>
-
-                <label className="block">
-                  <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-black text-slate-600"><CalendarDays className="size-3.5 text-[#0b2b55]" />تاريخ السفر</span>
-                  <input type="date" value={date} onChange={(e) => setDate(e.target.value)} min={new Date().toISOString().slice(0, 10)} className="h-[52px] w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-bold text-slate-800 outline-none transition focus:border-[#0b2b55] focus:bg-white focus:ring-4 focus:ring-[#0b2b55]/10" />
-                </label>
-
-                <div className="flex items-end">
-                  <Button type="submit" className="h-[52px] w-full gap-2 rounded-xl bg-[#d6a13c] px-7 font-black text-[#071a3a] shadow-lg shadow-[#d6a13c]/20 hover:bg-[#c58f2d] md:w-auto">
-                    <Search className="size-4" />
-                    بحث
-                  </Button>
-                </div>
-              </div>
+              <Button type="submit" className="h-[52px] self-end rounded-xl bg-[#0b2b55] text-sm font-black hover:bg-[#123d70]">
+                <Search className="ml-2 size-4" /> بحث عن الرحلات
+              </Button>
             </form>
           </div>
         </section>
 
-        <section className="mx-auto max-w-5xl px-4 pb-8 pt-24 sm:px-6 sm:pt-16">
-          <div className="mb-4 flex items-end justify-between gap-3">
-            <div>
-              <p className="text-sm font-black text-[#c89532]">خيارات السفر</p>
-              <h2 className="mt-1 text-2xl font-black text-[#0b2b55] sm:text-3xl">الرحلات المتاحة</h2>
-            </div>
-            <Link to="/customer/trips" className="inline-flex items-center gap-1 text-sm font-black text-[#3974b9] hover:underline">
-              عرض كل الرحلات
-              <ChevronLeft className="size-4" />
-            </Link>
-          </div>
-
-          {trips === undefined ? (
-            <div className="rounded-[24px] border border-slate-200 bg-white p-8 text-center text-sm font-bold text-slate-500 shadow-sm">
-              جاري تحميل الرحلات…
-            </div>
-          ) : featuredTrips.length === 0 ? (
-            <div className="rounded-[24px] border border-slate-200 bg-white p-8 text-center text-sm font-bold text-slate-500 shadow-sm">
-              لا توجد رحلات منشورة حالياً.
-            </div>
-          ) : (
-            <div className="grid gap-4">
-              {featuredTrips.map((trip) => (
-                <TripCard
-                  key={trip._id}
-                  trip={trip}
-                  companyName={companies?.find((company) => company.slug === trip.companyId)?.name}
-                  vip={trip.totalSeats <= 30}
-                />
-              ))}
-            </div>
-          )}
-        </section>
-
-        <section className="mx-auto max-w-7xl px-4 pb-10 sm:px-6">
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            <Link to="/customer/trips" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c]/60 hover:shadow-lg">
-              <span className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/7 text-[#0b2b55]"><BusFront className="size-5" /></span>
-              <p className="mt-3 font-black text-[#0b2b55]">الرحلات</p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">تصفح وقارن الرحلات المتاحة</p>
-              <ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" />
-            </Link>
-            <Link to="/customer/companies" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c]/60 hover:shadow-lg">
-              <span className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/7 text-[#0b2b55]"><Building2 className="size-5" /></span>
-              <p className="mt-3 font-black text-[#0b2b55]">شركات النقل</p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">تعرف على الشركات المستقلة</p>
-              <ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" />
-            </Link>
-            <Link to="/customer/booking" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c]/60 hover:shadow-lg">
-              <span className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/7 text-[#0b2b55]"><WalletCards className="size-5" /></span>
-              <p className="mt-3 font-black text-[#0b2b55]">الحجز</p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">أكمل حجز رحلتك بسهولة</p>
-              <ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" />
-            </Link>
-            <Link to="/customer/contact" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c]/60 hover:shadow-lg">
-              <span className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/7 text-[#0b2b55]"><CircleHelp className="size-5" /></span>
-              <p className="mt-3 font-black text-[#0b2b55]">المساعدة</p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">تواصل مع المنصة عند الحاجة</p>
-              <ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" />
-            </Link>
-            <button type="button" onClick={() => quickLink("/customer/trips")} className="group rounded-2xl border border-[#d6a13c]/30 bg-[#fffaf0] p-4 text-right shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
-              <span className="flex size-11 items-center justify-center rounded-xl bg-[#d6a13c]/15 text-[#9b6b17]"><Ticket className="size-5" /></span>
-              <p className="mt-3 font-black text-[#0b2b55]">ابدأ الحجز</p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">اختر رحلة ثم انتقل للحجز</p>
-              <ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" />
-            </button>
+        <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+          <div className="grid gap-4 md:grid-cols-4">
+            {[
+              [Search, "قارن الرحلات", "قارن المواعيد والأسعار والخدمات في مكان واحد."],
+              [Building2, "شركات نقل مستقلة", "اختر شركة النقل المنفذة للرحلة قبل الحجز."],
+              [Ticket, "حجز واضح", "استلم تفاصيل حجزك وتذكرتك بشكل منظم."],
+              [ShieldCheck, "تجربة موثوقة", "معلومات الرحلة والشركة واضحة قبل إتمام الحجز."],
+            ].map(([Icon, title, text]) => {
+              const IconComponent = Icon as typeof Search;
+              return <div key={title as string} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><IconComponent className="size-5 text-[#0b2b55]" /><h2 className="mt-4 font-black text-slate-900">{title as string}</h2><p className="mt-2 text-xs leading-6 text-slate-500">{text as string}</p></div>;
+            })}
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 pb-14 sm:px-6">
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-2xl border border-slate-200 bg-white p-5">
-              <ShieldCheck className="size-6 text-[#c99737]" />
-              <p className="mt-3 font-black text-[#0b2b55]">منصة محايدة</p>
-              <p className="mt-1 text-xs leading-6 text-slate-500">خطوط زحل تربط المسافر بشركات النقل المستقلة ولا تملك الحافلات.</p>
-            </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-5">
-              <BusFront className="size-6 text-[#c99737]" />
-              <p className="mt-3 font-black text-[#0b2b55]">بيانات حقيقية</p>
-              <p className="mt-1 text-xs leading-6 text-slate-500">{trips === undefined ? "جاري تحميل بيانات الرحلات…" : `${trips.length} رحلة مسجلة حالياً في النظام.`}</p>
-            </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-5">
-              <Building2 className="size-6 text-[#c99737]" />
-              <p className="mt-3 font-black text-[#0b2b55]">خيارات النقل</p>
-              <p className="mt-1 text-xs leading-6 text-slate-500">{companies === undefined ? "جاري تحميل الشركات…" : `${companies.length} شركة نقل نشطة متاحة حالياً.`}</p>
-            </div>
+        <section className="mx-auto max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
+          <div className="mb-6 flex items-end justify-between gap-4"><div><p className="text-xs font-black text-[#0b2b55]">رحلات متاحة</p><h2 className="mt-1 text-2xl font-black text-slate-900">اكتشف الرحلات</h2></div><Link to="/customer/trips" className="flex items-center gap-1 text-sm font-bold text-[#0b2b55]">عرض الكل <ChevronLeft className="size-4" /></Link></div>
+          {trips === undefined ? <div className="rounded-2xl border bg-white p-8 text-center text-sm text-slate-500">جاري تحميل الرحلات...</div> : trips.length === 0 ? <div className="rounded-2xl border bg-white p-8 text-center"><BusFront className="mx-auto size-8 text-slate-300" /><p className="mt-3 font-bold text-slate-700">لا توجد رحلات مطابقة حاليًا</p><p className="mt-1 text-xs text-slate-500">جرّب تغيير مدينة المغادرة أو الوجهة أو التاريخ.</p></div> : <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{trips.slice(0, 6).map((trip: any) => <TripCard key={trip._id} trip={trip} />)}</div>}
+        </section>
+
+        <section className="bg-white py-14">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-7 flex items-end justify-between"><div><p className="text-xs font-black text-[#0b2b55]">شركاؤنا</p><h2 className="mt-1 text-2xl font-black text-slate-900">شركات النقل المشاركة</h2></div><Link to="/customer/companies" className="text-sm font-bold text-[#0b2b55]">استعرض الشركات</Link></div>
+            {companies === undefined ? <div className="text-sm text-slate-500">جاري التحميل...</div> : companies.length === 0 ? <div className="rounded-2xl border border-dashed p-8 text-center text-sm text-slate-500">ستظهر شركات النقل المشاركة هنا عند توفرها.</div> : <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{companies.slice(0, 8).map((company: any) => <Link key={company._id} to={`/company/${company.slug || company._id}`} className="rounded-2xl border border-slate-200 bg-slate-50 p-5 transition hover:-translate-y-0.5 hover:border-[#0b2b55]/30 hover:bg-white hover:shadow-md"><div className="flex items-center gap-3"><div className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/10 text-[#0b2b55]"><Building2 className="size-5" /></div><div><h3 className="font-black text-slate-900">{company.name}</h3><p className="mt-1 text-xs text-slate-500">شركة نقل مستقلة</p></div></div></Link>)}</div>}
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+          <div className="grid gap-6 lg:grid-cols-3">
+            <div className="rounded-3xl bg-[#071d38] p-7 text-white lg:col-span-2"><WalletCards className="size-7" /><h2 className="mt-5 text-2xl font-black">منصة واحدة لمقارنة خياراتك</h2><p className="mt-3 max-w-2xl text-sm leading-7 text-slate-300">خطوط زحل منصة رقمية تربط المسافر بشركات النقل البري المستقلة. نحن لا نملك الحافلات ولا ننفذ الرحلات؛ شركة النقل الموضحة في الحجز هي المسؤولة عن تنفيذ الرحلة.</p></div>
+            <div className="rounded-3xl border bg-white p-7"><CircleHelp className="size-7 text-[#0b2b55]" /><h2 className="mt-5 text-xl font-black">تحتاج مساعدة؟</h2><p className="mt-2 text-sm leading-6 text-slate-500">اطلع على معلومات التواصل والأسئلة الشائعة.</p><Link to="/customer/contact" className="mt-5 inline-flex text-sm font-black text-[#0b2b55]">تواصل معنا <ChevronLeft className="mr-1 size-4" /></Link></div>
           </div>
         </section>
       </main>
