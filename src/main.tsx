@@ -27,6 +27,88 @@ function RouteLoading() {
   return <div className="min-h-screen flex items-center justify-center"><div className="animate-pulse text-muted-foreground">Loading...</div></div>;
 }
 
+/**
+ * Native date inputs render their editable date segments according to the
+ * browser/OS locale. That can reverse the visual order inside an RTL page.
+ * Keep the native input for the real picker/value, but provide a stable
+ * Arabic-friendly DD / MM / YYYY display for every visible date input.
+ */
+function installStableDateDisplays() {
+  if (typeof document === "undefined") return;
+
+  const formatDate = (value: string) => {
+    if (!value) return "اختر تاريخ السفر";
+    const [year, month, day] = value.split("-");
+    if (!year || !month || !day) return "اختر تاريخ السفر";
+    return `${day} / ${month} / ${year}`;
+  };
+
+  const enhance = (input: HTMLInputElement) => {
+    if (input.type !== "date" || input.dataset.slDateEnhanced === "true") return;
+
+    const computed = window.getComputedStyle(input);
+    // Landing/CustomerHome already use their own custom display layer.
+    if (computed.opacity === "0") return;
+
+    const parent = input.parentElement;
+    if (!parent) return;
+
+    if (window.getComputedStyle(parent).position === "static") {
+      parent.style.position = "relative";
+    }
+
+    input.dataset.slDateEnhanced = "true";
+    input.style.opacity = "0";
+    input.style.caretColor = "transparent";
+
+    const display = document.createElement("span");
+    display.className = "sl-date-display";
+    display.setAttribute("aria-hidden", "true");
+    display.textContent = formatDate(input.value);
+
+    const inputStyle = window.getComputedStyle(input);
+    Object.assign(display.style, {
+      position: "absolute",
+      left: `${input.offsetLeft}px`,
+      top: `${input.offsetTop}px`,
+      width: `${input.offsetWidth}px`,
+      height: `${input.offsetHeight}px`,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      boxSizing: "border-box",
+      padding: inputStyle.padding,
+      font: inputStyle.font,
+      fontWeight: inputStyle.fontWeight,
+      color: input.value ? inputStyle.color : "#94a3b8",
+      background: "transparent",
+      direction: "ltr",
+      textAlign: "right",
+      pointerEvents: "none",
+      zIndex: "1",
+    });
+
+    parent.appendChild(display);
+
+    const sync = () => {
+      display.textContent = formatDate(input.value);
+      display.style.color = input.value ? inputStyle.color : "#94a3b8";
+    };
+
+    input.addEventListener("change", sync);
+    input.addEventListener("input", sync);
+    sync();
+  };
+
+  const scan = () => {
+    document.querySelectorAll<HTMLInputElement>('input[type="date"]').forEach(enhance);
+  };
+
+  scan();
+  const observer = new MutationObserver(scan);
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+
 class RootErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; message: string; stack: string }> {
   state = { hasError: false, message: "", stack: "" };
   static getDerivedStateFromError(error: Error) { return { hasError: true, message: error.message || "Unknown runtime error", stack: error.stack || "" }; }
@@ -48,6 +130,8 @@ class RouteErrorBoundary extends React.Component<{ children: React.ReactNode; ro
 }
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
+
+installStableDateDisplays();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
