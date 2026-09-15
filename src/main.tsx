@@ -41,6 +41,8 @@ function installStableDateDisplay() {
     const parent = input.parentElement;
     if (!parent) return;
 
+    const computed = window.getComputedStyle(input);
+    const originalColor = computed.color;
     parent.style.position = parent.style.position || "relative";
     input.dataset.slDateDisplay = "true";
     input.style.color = "transparent";
@@ -51,7 +53,6 @@ function installStableDateDisplay() {
     display.setAttribute("aria-hidden", "true");
     display.className = "sl-date-display";
 
-    const computed = window.getComputedStyle(input);
     Object.assign(display.style, {
       position: "absolute",
       inset: "0",
@@ -63,7 +64,7 @@ function installStableDateDisplay() {
       pointerEvents: "none",
       font: computed.font,
       fontWeight: computed.fontWeight,
-      color: input.value ? computed.color : "#94a3b8",
+      color: input.value ? originalColor : "#94a3b8",
       background: "transparent",
       direction: "ltr",
       textAlign: "right",
@@ -74,7 +75,7 @@ function installStableDateDisplay() {
 
     const sync = () => {
       display.textContent = formatDate(input.value);
-      display.style.color = input.value ? computed.color : "#94a3b8";
+      display.style.color = input.value ? originalColor : "#94a3b8";
     };
 
     input.addEventListener("change", sync);
@@ -122,14 +123,11 @@ createRoot(document.getElementById("root")!).render(
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route path="/callback" element={<Callback />} />
-
-              {/* تجربة المسافر موزعة على صفحات مستقلة مع أسماء واضحة في شريط التنقل. */}
               <Route path="/customer" element={<RouteErrorBoundary routeName="/customer"><CustomerHome /></RouteErrorBoundary>} />
               <Route path="/customer/trips" element={<RouteErrorBoundary routeName="/customer/trips"><CustomerTrips /></RouteErrorBoundary>} />
               <Route path="/customer/companies" element={<RouteErrorBoundary routeName="/customer/companies"><CustomerCompanies /></RouteErrorBoundary>} />
               <Route path="/customer/booking" element={<RouteErrorBoundary routeName="/customer/booking"><CustomerBooking /></RouteErrorBoundary>} />
               <Route path="/customer/contact" element={<RouteErrorBoundary routeName="/customer/contact"><CustomerContact /></RouteErrorBoundary>} />
-
               <Route path="/auth" element={<AuthPage redirectAfterAuth="/dashboard" />} />
               <Route path="/company/auth" element={<RouteErrorBoundary routeName="/company/auth"><CompanyLogin /></RouteErrorBoundary>} />
               <Route path="/company/:slug" element={<RouteErrorBoundary routeName="/company/:slug"><CompanyPage /></RouteErrorBoundary>} />
