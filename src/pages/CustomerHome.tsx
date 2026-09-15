@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useLocations } from "@/hooks/useLocations";
+import { useLocations } from "@/hooks/use-locations";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { BusFront, CalendarDays, ChevronLeft, CircleHelp, Compass, MapPin, Search, ShieldCheck, Ticket, Building2, WalletCards } from "lucide-react";
@@ -19,25 +19,24 @@ function formatTravelDate(value: string) {
 
 export default function CustomerHome() {
   const navigate = useNavigate();
-  const { saudiCities, yemenGovernorates } = useLocations();
+  const { saudiCities, yemenCities } = useLocations();
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [date, setDate] = useState("");
 
   const trips = useQuery(api.trips.list, {
-    fromCityId: from || undefined,
-    toGovernorateId: to || undefined,
-    date: date || undefined,
+    from: from || undefined,
+    to: to || undefined,
   });
-  const companies = useQuery(api.companies.listActive, {});
+  const companies = useQuery(api.companies.listActive);
 
-  const submitSearch = (event: FormEvent) => {
+  const submitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const params = new URLSearchParams();
     if (from) params.set("from", from);
     if (to) params.set("to", to);
     if (date) params.set("date", date);
-    navigate(`/customer/trips${params.toString() ? `?${params}` : ""}`);
+    navigate(`/customer/trips${params.toString() ? `?${params.toString()}` : ""}`);
   };
 
   return (
@@ -64,15 +63,15 @@ export default function CustomerHome() {
                 <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-black text-slate-600"><MapPin className="size-3.5 text-[#0b2b55]" />مدينة المغادرة</span>
                 <select value={from} onChange={(e) => setFrom(e.target.value)} className="h-[52px] w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-bold outline-none focus:border-[#0b2b55] focus:bg-white focus:ring-4 focus:ring-[#0b2b55]/10">
                   <option value="">اختر مدينة المغادرة</option>
-                  {saudiCities?.map((city: any) => <option key={city._id} value={city._id}>{city.name}</option>)}
+                  {saudiCities.map((city) => <option key={city} value={city}>{city}</option>)}
                 </select>
               </label>
 
               <label className="block">
-                <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-black text-slate-600"><MapPin className="size-3.5 text-[#0b2b55]" />الوجهة</span>
+                <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-black text-slate-600"><MapPin className="size-3.5 text-[#0b2b55]" />مدينة الوصول</span>
                 <select value={to} onChange={(e) => setTo(e.target.value)} className="h-[52px] w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-bold outline-none focus:border-[#0b2b55] focus:bg-white focus:ring-4 focus:ring-[#0b2b55]/10">
-                  <option value="">اختر المحافظة اليمنية</option>
-                  {yemenGovernorates?.map((governorate: any) => <option key={governorate._id} value={governorate._id}>{governorate.name}</option>)}
+                  <option value="">اختر مدينة الوصول</option>
+                  {yemenCities.map((city) => <option key={city} value={city}>{city}</option>)}
                 </select>
               </label>
 
