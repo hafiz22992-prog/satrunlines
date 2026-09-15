@@ -30,6 +30,17 @@ export function formatDateDDMMYYYY(dateStr: string): string {
   return `${d}/${m}/${y}`;
 }
 
+/**
+ * Format a date string (yyyy-mm-dd) to Arabic format with Arabic-Indic numerals.
+ * Example: "2026-09-15" -> "١٥/٠٩/٢٠٢٦"
+ */
+export function formatDateArabic(dateStr: string): string {
+  if (!dateStr) return "";
+  const [y, m, d] = dateStr.split("-");
+  if (!y || !m || !d) return dateStr;
+  return `${toArabicIndic(d)}/${toArabicIndic(m)}/${toArabicIndic(y)}`;
+}
+
 /** Convert a dd/mm/yyyy date string back into an HTML date input value (yyyy-mm-dd). */
 export function inputDateFromDDMMYYYY(dateStr: string): string {
   if (!dateStr) return "";
