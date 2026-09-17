@@ -20,8 +20,7 @@ import { Link, useNavigate } from "react-router";
 import { CustomerLayout } from "@/components/CustomerLayout";
 import { TripCard } from "@/components/customer/TripCard";
 
-const HERO_IMAGE =
-  "https://en.yutong.com/res/res/2024/3/7/product/productCatPic/8ac292568d4047ec018e16ae18c80031.webp";
+const HERO_IMAGE = "/saturn-lines-bus-hero.svg";
 
 export default function CustomerHome() {
   const navigate = useNavigate();
@@ -138,22 +137,13 @@ export default function CustomerHome() {
           </div>
 
           {trips === undefined ? (
-            <div className="rounded-[24px] border border-slate-200 bg-white p-8 text-center text-sm font-bold text-slate-500 shadow-sm">
-              جاري تحميل الرحلات…
-            </div>
+            <div className="rounded-[24px] border border-slate-200 bg-white p-8 text-center text-sm font-bold text-slate-500 shadow-sm">جاري تحميل الرحلات…</div>
           ) : featuredTrips.length === 0 ? (
-            <div className="rounded-[24px] border border-slate-200 bg-white p-8 text-center text-sm font-bold text-slate-500 shadow-sm">
-              لا توجد رحلات منشورة حالياً.
-            </div>
+            <div className="rounded-[24px] border border-slate-200 bg-white p-8 text-center text-sm font-bold text-slate-500 shadow-sm">لا توجد رحلات منشورة حالياً.</div>
           ) : (
             <div className="grid gap-4">
               {featuredTrips.map((trip) => (
-                <TripCard
-                  key={trip._id}
-                  trip={trip}
-                  companyName={companies?.find((company) => company.slug === trip.companyId)?.name}
-                  vip={trip.totalSeats <= 30}
-                />
+                <TripCard key={trip._id} trip={trip} companyName={companies?.find((company) => company.slug === trip.companyId)?.name} vip={trip.totalSeats <= 30} />
               ))}
             </div>
           )}
@@ -161,56 +151,19 @@ export default function CustomerHome() {
 
         <section className="mx-auto max-w-7xl px-4 pb-10 sm:px-6">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            <Link to="/customer/trips" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c]/60 hover:shadow-lg">
-              <span className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/7 text-[#0b2b55]"><BusFront className="size-5" /></span>
-              <p className="mt-3 font-black text-[#0b2b55]">الرحلات</p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">تصفح وقارن الرحلات المتاحة</p>
-              <ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" />
-            </Link>
-            <Link to="/customer/companies" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c]/60 hover:shadow-lg">
-              <span className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/7 text-[#0b2b55]"><Building2 className="size-5" /></span>
-              <p className="mt-3 font-black text-[#0b2b55]">شركات النقل</p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">تعرف على الشركات المستقلة</p>
-              <ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" />
-            </Link>
-            <Link to="/customer/booking" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c]/60 hover:shadow-lg">
-              <span className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/7 text-[#0b2b55]"><WalletCards className="size-5" /></span>
-              <p className="mt-3 font-black text-[#0b2b55]">الحجز</p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">أكمل حجز رحلتك بسهولة</p>
-              <ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" />
-            </Link>
-            <Link to="/customer/contact" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c]/60 hover:shadow-lg">
-              <span className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/7 text-[#0b2b55]"><CircleHelp className="size-5" /></span>
-              <p className="mt-3 font-black text-[#0b2b55]">المساعدة</p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">تواصل مع المنصة عند الحاجة</p>
-              <ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" />
-            </Link>
-            <button type="button" onClick={() => quickLink("/customer/trips")} className="group rounded-2xl border border-[#d6a13c]/30 bg-[#fffaf0] p-4 text-right shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
-              <span className="flex size-11 items-center justify-center rounded-xl bg-[#d6a13c]/15 text-[#9b6b17]"><Ticket className="size-5" /></span>
-              <p className="mt-3 font-black text-[#0b2b55]">ابدأ الحجز</p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">اختر رحلة ثم انتقل للحجز</p>
-              <ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" />
-            </button>
+            <Link to="/customer/trips" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c]/60 hover:shadow-lg"><span className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/7 text-[#0b2b55]"><BusFront className="size-5" /></span><p className="mt-3 font-black text-[#0b2b55]">الرحلات</p><p className="mt-1 text-xs leading-5 text-slate-500">تصفح وقارن الرحلات المتاحة</p><ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" /></Link>
+            <Link to="/customer/companies" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c]/60 hover:shadow-lg"><span className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/7 text-[#0b2b55]"><Building2 className="size-5" /></span><p className="mt-3 font-black text-[#0b2b55]">شركات النقل</p><p className="mt-1 text-xs leading-5 text-slate-500">تعرف على الشركات المستقلة</p><ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" /></Link>
+            <Link to="/customer/booking" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c]/60 hover:shadow-lg"><span className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/7 text-[#0b2b55]"><WalletCards className="size-5" /></span><p className="mt-3 font-black text-[#0b2b55]">الحجز</p><p className="mt-1 text-xs leading-5 text-slate-500">أكمل حجز رحلتك بسهولة</p><ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" /></Link>
+            <Link to="/customer/contact" className="group rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c]/60 hover:shadow-lg"><span className="flex size-11 items-center justify-center rounded-xl bg-[#0b2b55]/7 text-[#0b2b55]"><CircleHelp className="size-5" /></span><p className="mt-3 font-black text-[#0b2b55]">المساعدة</p><p className="mt-1 text-xs leading-5 text-slate-500">تواصل مع المنصة عند الحاجة</p><ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" /></Link>
+            <button type="button" onClick={() => quickLink("/customer/trips")} className="group rounded-2xl border border-[#d6a13c]/30 bg-[#fffaf0] p-4 text-right shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"><span className="flex size-11 items-center justify-center rounded-xl bg-[#d6a13c]/15 text-[#9b6b17]"><Ticket className="size-5" /></span><p className="mt-3 font-black text-[#0b2b55]">ابدأ الحجز</p><p className="mt-1 text-xs leading-5 text-slate-500">اختر رحلة ثم انتقل للحجز</p><ChevronLeft className="mt-3 size-4 text-[#c99737] transition group-hover:-translate-x-1" /></button>
           </div>
         </section>
 
         <section className="mx-auto max-w-7xl px-4 pb-14 sm:px-6">
           <div className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-2xl border border-slate-200 bg-white p-5">
-              <ShieldCheck className="size-6 text-[#c99737]" />
-              <p className="mt-3 font-black text-[#0b2b55]">منصة محايدة</p>
-              <p className="mt-1 text-xs leading-6 text-slate-500">خطوط زحل تربط المسافر بشركات النقل المستقلة ولا تملك الحافلات.</p>
-            </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-5">
-              <BusFront className="size-6 text-[#c99737]" />
-              <p className="mt-3 font-black text-[#0b2b55]">بيانات حقيقية</p>
-              <p className="mt-1 text-xs leading-6 text-slate-500">{trips === undefined ? "جاري تحميل بيانات الرحلات…" : `${trips.length} رحلة مسجلة حالياً في النظام.`}</p>
-            </div>
-            <div className="rounded-2xl border border-slate-200 bg-white p-5">
-              <Building2 className="size-6 text-[#c99737]" />
-              <p className="mt-3 font-black text-[#0b2b55]">خيارات النقل</p>
-              <p className="mt-1 text-xs leading-6 text-slate-500">{companies === undefined ? "جاري تحميل الشركات…" : `${companies.length} شركة نقل نشطة متاحة حالياً.`}</p>
-            </div>
+            <div className="rounded-2xl border border-slate-200 bg-white p-5"><ShieldCheck className="size-6 text-[#c99737]" /><p className="mt-3 font-black text-[#0b2b55]">منصة محايدة</p><p className="mt-1 text-xs leading-6 text-slate-500">خطوط زحل تربط المسافر بشركات النقل المستقلة ولا تملك الحافلات.</p></div>
+            <div className="rounded-2xl border border-slate-200 bg-white p-5"><BusFront className="size-6 text-[#c99737]" /><p className="mt-3 font-black text-[#0b2b55]">بيانات حقيقية</p><p className="mt-1 text-xs leading-6 text-slate-500">{trips === undefined ? "جاري تحميل بيانات الرحلات…" : `${trips.length} رحلة مسجلة حالياً في النظام.`}</p></div>
+            <div className="rounded-2xl border border-slate-200 bg-white p-5"><Building2 className="size-6 text-[#c99737]" /><p className="mt-3 font-black text-[#0b2b55]">خيارات النقل</p><p className="mt-1 text-xs leading-6 text-slate-500">{companies === undefined ? "جاري تحميل الشركات…" : `${companies.length} شركة نقل نشطة متاحة حالياً.`}</p></div>
           </div>
         </section>
       </main>
