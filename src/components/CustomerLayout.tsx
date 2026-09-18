@@ -29,10 +29,15 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
           <nav aria-label="تنقل المسافر" className="hidden items-center gap-1 text-sm font-black text-slate-600 md:flex">
             <Link to="/customer" className="rounded-xl px-4 py-2.5 transition hover:bg-[#f5f7fa] hover:text-[#082750]">الرئيسية</Link>
             <Link to="/customer/trips" className="rounded-xl px-4 py-2.5 transition hover:bg-[#f5f7fa] hover:text-[#082750]">ابحث عن رحلة</Link>
+            <Link to="/customer/booking" className="rounded-xl px-4 py-2.5 transition hover:bg-[#f5f7fa] hover:text-[#082750]">احجز رحلتك</Link>
             <Link to="/customer/contact" className="rounded-xl px-4 py-2.5 transition hover:bg-[#f5f7fa] hover:text-[#082750]">المساعدة</Link>
           </nav>
 
           <div className="flex shrink-0 items-center gap-2">
+            <Link to="/customer/booking" className="hidden items-center gap-1.5 rounded-xl bg-[#f8f4e9] px-3 py-2 text-xs font-black text-[#082750] transition hover:bg-[#efe6cf] sm:flex">
+              <Ticket className="size-4" />
+              احجز رحلتك
+            </Link>
             {isAuthenticated && (
               <Link to="/customer/booking" className="hidden items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-black text-[#082750] transition hover:bg-[#f5f7fa] sm:flex">
                 <Ticket className="size-4" />
@@ -64,6 +69,7 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
             <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-white/70">
               <Link to="/customer" className="rounded-lg px-3 py-2 hover:bg-white/10 hover:text-white">الرئيسية</Link>
               <Link to="/customer/trips" className="rounded-lg px-3 py-2 hover:bg-white/10 hover:text-white">الرحلات</Link>
+              <Link to="/customer/booking" className="rounded-lg px-3 py-2 hover:bg-white/10 hover:text-white">احجز رحلتك</Link>
               <Link to="/customer/contact" className="rounded-lg px-3 py-2 hover:bg-white/10 hover:text-white"><CircleHelp className="ml-1 inline size-3.5" />المساعدة</Link>
             </div>
           </div>
