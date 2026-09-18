@@ -1,8 +1,43 @@
 import { BookingForm } from "@/components/BookingForm";
 import { CustomerLayout } from "@/components/CustomerLayout";
-import { useSearchParams } from "react-router";
+import { ArrowRight, ShieldCheck } from "lucide-react";
+import { Link, useSearchParams } from "react-router";
 
 export default function CustomerBooking() {
   const [params] = useSearchParams();
-  return <CustomerLayout><main className="mx-auto max-w-5xl px-4 py-10 sm:px-6"><div className="mb-7"><p className="text-sm font-black text-[#c89532]">الحجز</p><h1 className="mt-1 text-3xl font-black text-[#0b2b55]">احجز رحلتك</h1><p className="mt-2 text-sm text-slate-500">أكمل بيانات المسافر واختر الرحلة وطريقة الدفع المتاحة.</p></div><BookingForm initialFrom={params.get("from") ?? ""} initialTo={params.get("to") ?? ""} /></main></CustomerLayout>;
+  const from = params.get("from") ?? "";
+  const to = params.get("to") ?? "";
+
+  return (
+    <CustomerLayout>
+      <main className="min-h-[calc(100vh-76px)] bg-[#f7f9fc]">
+        <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
+          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="mb-2 flex items-center gap-2 text-sm font-black text-[#c89532]">
+                <ShieldCheck className="size-4" />
+                حجز عبر منصة خطوط زحل
+              </div>
+              <h1 className="text-3xl font-black tracking-tight text-[#082750] sm:text-4xl">
+                احجز رحلتك
+              </h1>
+              <p className="mt-2 max-w-2xl text-sm leading-7 text-slate-500">
+                أكمل بيانات المسافر، اختر شركة النقل والرحلة المناسبة، ثم حدّد طريقة الدفع.
+                خطوط زحل منصة حجز ومقارنة، أما تنفيذ الرحلة فيتم بواسطة شركة النقل الموضحة في الحجز.
+              </p>
+            </div>
+            <Link
+              to="/customer/trips"
+              className="inline-flex items-center gap-2 self-start rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-black text-[#082750] shadow-sm transition hover:border-[#c89532]"
+            >
+              <ArrowRight className="size-4" />
+              العودة إلى الرحلات
+            </Link>
+          </div>
+
+          <BookingForm initialFrom={from} initialTo={to} />
+        </section>
+      </main>
+    </CustomerLayout>
+  );
 }
