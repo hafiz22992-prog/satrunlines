@@ -8,12 +8,12 @@ import { Link, useNavigate } from "react-router";
 import { CustomerLayout } from "@/components/CustomerLayout";
 import { TripCard } from "@/components/customer/TripCard";
 
-const HERO_IMAGE = "/saturn-lines-bus-hero.svg";
+const HERO_IMAGE = "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=2200&q=88";
 
 const destinations = [
-  { name: "صنعاء", image: "/saturn-lines-sanaa.svg" },
-  { name: "عدن", image: "/saturn-lines-aden.svg" },
-  { name: "حضرموت", image: "/saturn-lines-hadhramaut.svg" },
+  { name: "صنعاء", image: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1200&q=85" },
+  { name: "عدن", image: "https://images.unsplash.com/photo-1509749837427-ac94a2553d0e?auto=format&fit=crop&w=1200&q=85" },
+  { name: "حضرموت", image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=85" },
 ];
 
 export default function CustomerHome() {
@@ -44,7 +44,7 @@ export default function CustomerHome() {
       <main className="overflow-hidden bg-[#f5f7fa]">
         <section className="relative min-h-[610px] overflow-visible bg-[#061a38]">
           <div className="absolute inset-0">
-            <img src={HERO_IMAGE} alt="حافلة سفر على طريق مفتوح" className="h-full w-full object-cover object-center" />
+            <img src={HERO_IMAGE} alt="حافلة سفر حقيقية على طريق مفتوح" className="h-full w-full object-cover object-center" />
             <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,17,39,.98)_0%,rgba(5,25,53,.88)_34%,rgba(5,25,53,.48)_68%,rgba(5,25,53,.12)_100%)]" />
             <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(3,17,39,.92)_0%,transparent_52%,rgba(3,17,39,.18)_100%)]" />
           </div>
