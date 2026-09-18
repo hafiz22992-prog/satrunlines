@@ -25,6 +25,7 @@ export default function CustomerHome() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [date, setDate] = useState("");
+  const [passengers, setPassengers] = useState("1");
 
   const search = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,6 +33,7 @@ export default function CustomerHome() {
     if (from) params.set("from", from);
     if (to) params.set("to", to);
     if (date) params.set("date", date);
+    if (passengers) params.set("passengers", passengers);
     navigate(`/customer/trips${params.toString() ? `?${params.toString()}` : ""}`);
   };
 
@@ -79,7 +81,7 @@ export default function CustomerHome() {
                 <span className="hidden items-center gap-2 rounded-full bg-[#f8f4e9] px-3 py-2 text-[11px] font-black text-[#8a641d] sm:inline-flex"><ShieldCheck className="size-4" />حجز عبر منصة خطوط زحل</span>
               </div>
 
-              <div className="grid gap-3 lg:grid-cols-[1fr_1fr_1fr_auto]">
+              <div className="grid gap-3 lg:grid-cols-[1fr_1fr_1fr_180px_auto]">
                 <label className="block rounded-2xl border border-slate-200 bg-slate-50 p-3 transition focus-within:border-[#0b2b55] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#0b2b55]/10">
                   <span className="flex items-center gap-1.5 text-[11px] font-black text-slate-500"><MapPin className="size-3.5 text-[#0b2b55]" />مدينة المغادرة</span>
                   <select value={from} onChange={(e) => setFrom(e.target.value)} disabled={citiesLoading} className="mt-1 h-8 w-full bg-transparent text-sm font-black text-[#082750] outline-none">
@@ -99,6 +101,18 @@ export default function CustomerHome() {
                 <label className="block rounded-2xl border border-slate-200 bg-slate-50 p-3 transition focus-within:border-[#0b2b55] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#0b2b55]/10">
                   <span className="flex items-center gap-1.5 text-[11px] font-black text-slate-500"><CalendarDays className="size-3.5 text-[#0b2b55]" />موعد السفر</span>
                   <input type="date" value={date} onChange={(e) => setDate(e.target.value)} min={new Date().toISOString().slice(0, 10)} className="mt-1 h-8 w-full bg-transparent text-sm font-black text-[#082750] outline-none" />
+                </label>
+
+                <label className="block rounded-2xl border border-slate-200 bg-slate-50 p-3 transition focus-within:border-[#0b2b55] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#0b2b55]/10">
+                  <span className="flex items-center gap-1.5 text-[11px] font-black text-slate-500"><Users className="size-3.5 text-[#0b2b55]" />المسافرون</span>
+                  <select value={passengers} onChange={(e) => setPassengers(e.target.value)} className="mt-1 h-8 w-full bg-transparent text-sm font-black text-[#082750] outline-none">
+                    <option value="1">1 مسافر</option>
+                    <option value="2">2 مسافرين</option>
+                    <option value="3">3 مسافرين</option>
+                    <option value="4">4 مسافرين</option>
+                    <option value="5">5 مسافرين</option>
+                    <option value="6">6 مسافرين</option>
+                  </select>
                 </label>
 
                 <Button type="submit" className="h-[68px] gap-2 rounded-2xl bg-[#d6a13c] px-8 text-base font-black text-[#071a3a] shadow-lg shadow-[#d6a13c]/20 hover:bg-[#c58f2d]">
