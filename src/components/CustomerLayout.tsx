@@ -73,6 +73,14 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
               <Link to="/customer/contact" className="rounded-lg px-3 py-2 hover:bg-white/10 hover:text-white"><CircleHelp className="ml-1 inline size-3.5" />المساعدة</Link>
             </div>
           </div>
+          <div className="mt-8 border-t border-white/10 pt-5 text-center">
+            <p className="text-xs font-bold text-white/75">
+              © 2026 خطوط زحل — جميع الحقوق محفوظة
+            </p>
+            <p className="mt-1 text-[11px] text-white/45">
+              منصة خطوط زحل وجميع الحقوق المتعلقة بالهوية والتصميم والمحتوى والبرمجيات محفوظة لخطوط زحل.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
