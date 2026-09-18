@@ -56,7 +56,8 @@ createRoot(document.getElementById("root")!).render(
         <BrowserRouter>
           <Suspense fallback={<RouteLoading />}>
             <Routes>
-              <Route path="/" element={<Landing />} />
+              {/* الصفحة العامة الرئيسية تستخدم تجربة المسافر الموحدة نفسها، حتى لا تظهر نسخة قديمة مختلفة على النطاق الأساسي. */}
+              <Route path="/" element={<RouteErrorBoundary routeName="/"><CustomerHome /></RouteErrorBoundary>} />
               <Route path="/callback" element={<Callback />} />
 
               {/* تجربة المسافر موزعة على صفحات مستقلة مع أسماء واضحة في شريط التنقل. */}
