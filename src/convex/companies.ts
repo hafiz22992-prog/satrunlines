@@ -140,6 +140,13 @@ export const updateEmailStatus = mutation({
     companyUrl: v.optional(v.string()),
   },
   handler: async (ctx, { slug, emailStatus, companyUrl }) => {
+    const userId = await getAuthUserId(ctx);
+    if (userId === null) throw new Error("غير مصرح — سجّل الدخول أولاً");
+    const user = await ctx.db.get(userId);
+    if ((await resolveRole(ctx, user?.email, user?.role)).role !== "owner") {
+      throw new Error("غير مصرح — هذه الإدارة للمالك فقط");
+    }
+
     const existing = await ctx.db
       .query("companies")
       .withIndex("by_slug", (q) => q.eq("slug", slug))
@@ -147,8 +154,11 @@ export const updateEmailStatus = mutation({
     if (!existing) throw new Error("الشركة غير موجودة");
     const patch: Record<string, unknown> = {
       emailStatus,
-      lastEmailSentAt: Date.now(),
     };
+    // lastEmailSentAt يعني آخر إرسال ناجح فقط، وليس محاولة فاشلة.
+    if (emailStatus === "sent") {
+      patch.lastEmailSentAt = Date.now();
+    }
     if (companyUrl) patch.companyUrl = companyUrl;
     await ctx.db.patch(existing._id, patch);
     return { updated: true, slug };
