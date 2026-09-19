@@ -113,7 +113,10 @@ export function CompaniesManager() {
   const [uploadingLogoSlug, setUploadingLogoSlug] = useState<string | null>(null);
   const logoFileRef = useRef<HTMLInputElement>(null);
 
-  // روابط الدعوات تستخدم النطاق الرسمي للإنتاج، لا عنوان لوحة المالك (مثل .vercel.app).\n  const siteUrl =\n    (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(/\\/$/, "") ||\n    (typeof window !== "undefined" ? window.location.origin : "");
+  // روابط الدعوات تستخدم النطاق الرسمي للإنتاج، لا عنوان لوحة المالك (مثل .vercel.app).
+  const siteUrl =
+    (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(/\/$/, "") ||
+    (typeof window !== "undefined" ? window.location.origin : "");
 
   // ─── helpers ──────────────────────────────────────────────
 
