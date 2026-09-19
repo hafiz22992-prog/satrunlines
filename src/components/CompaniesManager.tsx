@@ -113,7 +113,7 @@ export function CompaniesManager() {
   const [uploadingLogoSlug, setUploadingLogoSlug] = useState<string | null>(null);
   const logoFileRef = useRef<HTMLInputElement>(null);
 
-  const siteUrl = typeof window !== "undefined" ? window.location.origin : "";
+  // روابط الدعوات تستخدم النطاق الرسمي للإنتاج، لا عنوان لوحة المالك (مثل .vercel.app).\n  const siteUrl =\n    (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(/\\/$/, "") ||\n    (typeof window !== "undefined" ? window.location.origin : "");
 
   // ─── helpers ──────────────────────────────────────────────
 
@@ -187,7 +187,7 @@ export function CompaniesManager() {
           : [];
 
       // 1) save basic company info
-      await saveCompany({
+      const saveResult = await saveCompany({
         slug,
         name,
         base: form.base.trim() || undefined,
@@ -233,11 +233,44 @@ export function CompaniesManager() {
         });
       }
 
-      toast.success(
-        editingCompany
-          ? "تم تحديث بيانات الشركة بنجاح"
-          : "تمت إضافة الشركة بنجاح — يمكنك الآن تعديل بيانات التواصل من بطاقتها",
-      );
+      // عند إنشاء شركة جديدة وبوجود بريد صالح، أرسل دعوة الشركة مباشرة بعد اكتمال الحفظ.
+      // فشل البريد لا يلغي إنشاء الشركة؛ بل يُسجّل كفشل ويمكن إعادة الإرسال من بطاقة الشركة.
+      if (!editingCompany && saveResult.created && emails[0] && siteUrl) {
+        const email = emails[0];
+        const companyUrl = `${siteUrl}/company/${slug}`;
+        setSendingEmail((s) => ({ ...s, [slug]: true }));
+        try {
+          await sendInvitation({ email, companyName: name, companyUrl });
+          await updateEmailStatus({
+            slug,
+            emailStatus: "sent",
+            companyUrl,
+          });
+          toast.success(`تمت إضافة الشركة وإرسال دعوة الدخول إلى ${email}`);
+        } catch (emailError) {
+          console.error("[COMPANY INVITATION] Failed after company creation", emailError);
+          try {
+            await updateEmailStatus({
+              slug,
+              emailStatus: "failed",
+              companyUrl,
+            });
+          } catch (statusError) {
+            console.error("[COMPANY INVITATION] Failed to persist email status", statusError);
+          }
+          toast.warning(
+            "تمت إضافة الشركة، لكن تعذر إرسال دعوة البريد. يمكنك إعادة الإرسال من بطاقة الشركة.",
+          );
+        } finally {
+          setSendingEmail((s) => ({ ...s, [slug]: false }));
+        }
+      } else {
+        toast.success(
+          editingCompany
+            ? "تم تحديث بيانات الشركة بنجاح"
+            : "تمت إضافة الشركة بنجاح — يمكنك الآن تعديل بيانات التواصل من بطاقتها",
+        );
+      }
       setDialogOpen(false);
     } catch (error) {
       console.error(error);
