@@ -181,8 +181,7 @@ export function PaymentsSection({
           </SelectContent>
         </Select>
         <div className="flex items-center gap-2">
-          <Input
-            type="date"
+          <Input dir="ltr" type="date"
             value={dateFilter}
             onChange={(e) => setDateFilter(e.target.value)}
             className={filterBar}
