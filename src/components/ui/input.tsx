@@ -24,6 +24,8 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
           tabIndex={-1}
           disabled={props.disabled}
           data-slot="input-date-display"
+          dir="ltr"
+          style={{ direction: "ltr", unicodeBidi: "isolate" }}
           className={cn(
             "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none md:text-sm",
             "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
@@ -35,6 +37,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
         <input
           {...props}
           type="date"
+          dir="ltr"
           data-slot="input"
           className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
           aria-label={props["aria-label"] ?? "التاريخ"}
