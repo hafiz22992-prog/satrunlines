@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -651,12 +652,12 @@ export function BookingForm({
                 <CalendarDays className="size-3.5 text-muted-foreground" />
                 تاريخ السفر
               </Label>
-              <Input
+              <DatePicker
                 id="travelDate"
-                type="date"
                 min={todayInputValue()}
                 value={form.travelDate}
-                onChange={(e) => update("travelDate", e.target.value)}
+                onChange={(value) => update("travelDate", value)}
+                aria-invalid={Boolean(errors.travelDate)}
               />
               <FieldError message={errors.travelDate} />
             </div>
