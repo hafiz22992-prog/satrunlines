@@ -11,7 +11,7 @@ const assets = [
   { file: "hero-road.jpg", source: "https://commons.wikimedia.org/wiki/Special:FilePath/Desert_road.JPG", credit: "MEga SPeed — Wikimedia Commons — CC BY 3.0" },
   { file: "riyadh.jpg", source: "https://commons.wikimedia.org/wiki/Special:FilePath/Riyadh_Skyline.jpg", credit: "Wikimedia Commons — CC BY-SA 4.0" },
   { file: "jeddah.jpg", source: "https://commons.wikimedia.org/wiki/Special:FilePath/Jeddah_Corniche_Photo.jpg", credit: "Wikimedia Commons — CC0" },
-  { file: "makkah.jpg", source: "https://commons.wikimedia.org/wiki/Special:FilePath/Kaaba_(1)_Makkah_(Mecca).jpg", credit: "Wikimedia Commons — CC BY-SA 3.0" },
+  { file: "makkah.jpg", source: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Kaaba_%281%29_Makkah_%28Mecca%29.jpg/1280px-Kaaba_%281%29_Makkah_%28Mecca%29.jpg", credit: "Wikimedia Commons — CC BY-SA 3.0" },
   { file: "sanaa.jpg", source: "https://commons.wikimedia.org/wiki/Special:FilePath/Old_City_of_Sana%27a-111119.jpg", credit: "Wikimedia Commons — CC BY-SA 3.0 IGO" },
   { file: "aden.jpg", source: "https://commons.wikimedia.org/wiki/Special:FilePath/Port_Of_Aden_Yemen.jpg", credit: "Wikimedia Commons — CC BY-SA 3.0" },
   { file: "hadhramaut.jpg", source: "https://commons.wikimedia.org/wiki/Special:FilePath/Shibam_Hadramaut_1.jpg", credit: "Wikimedia Commons — CC BY-SA 4.0" },
