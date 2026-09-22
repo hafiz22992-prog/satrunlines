@@ -44,12 +44,12 @@ export function DatePicker({ id, value, onChange, min, disabled, "aria-invalid":
             <span className="flex min-w-0 items-center gap-2" dir="rtl">
               <CalendarDays className="size-4 shrink-0 text-muted-foreground" />
               {selected ? (
-                <span className="flex items-baseline gap-2" dir="rtl">
-                  <span className="whitespace-nowrap" dir="rtl">{format(selected, "d", { locale: ar })}</span>
+                <span className="flex items-baseline gap-2" dir="ltr" style={{ unicodeBidi: "isolate" }}>
+                  <span className="whitespace-nowrap" dir="rtl" style={{ unicodeBidi: "isolate" }}>{format(selected, "d", { locale: ar })}</span>
                   <span className="text-muted-foreground">|</span>
-                  <span className="whitespace-nowrap" dir="rtl">{format(selected, "MMMM", { locale: ar })}</span>
+                  <span className="whitespace-nowrap" dir="rtl" style={{ unicodeBidi: "isolate" }}>{format(selected, "MMMM", { locale: ar })}</span>
                   <span className="text-muted-foreground">|</span>
-                  <span className="whitespace-nowrap" dir="ltr">{format(selected, "yyyy")}</span>
+                  <span className="whitespace-nowrap" dir="ltr" style={{ unicodeBidi: "isolate" }}>{format(selected, "yyyy")}</span>
                 </span>
               ) : (
                 <span className="flex items-baseline gap-2 text-sm" dir="rtl">
