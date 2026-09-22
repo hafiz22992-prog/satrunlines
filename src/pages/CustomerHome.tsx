@@ -7,6 +7,8 @@ import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
 import { CustomerLayout } from "@/components/CustomerLayout";
 import { TripCard } from "@/components/customer/TripCard";
+import { DatePicker } from "@/components/ui/date-picker";
+import { todayInputValue } from "@/lib/arabic";
 
 const HERO_IMAGE = "https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=2200&q=88";
 
@@ -100,7 +102,14 @@ export default function CustomerHome() {
 
                 <label className="block rounded-2xl border border-slate-200 bg-slate-50 p-3 transition focus-within:border-[#0b2b55] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#0b2b55]/10">
                   <span className="flex items-center gap-1.5 text-[11px] font-black text-slate-500"><CalendarDays className="size-3.5 text-[#0b2b55]" />موعد السفر</span>
-                  <input dir="ltr" type="date" value={date} onChange={(e) => setDate(e.target.value)} min={new Date().toISOString().slice(0, 10)} className="mt-1 h-8 w-full bg-transparent text-sm font-black text-[#082750] outline-none" />
+                  <div className="mt-1">
+                    <DatePicker
+                      id="home-travel-date"
+                      value={date}
+                      onChange={setDate}
+                      min={todayInputValue()}
+                    />
+                  </div>
                 </label>
 
                 <label className="block rounded-2xl border border-slate-200 bg-slate-50 p-3 transition focus-within:border-[#0b2b55] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#0b2b55]/10">
