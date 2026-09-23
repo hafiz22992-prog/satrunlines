@@ -94,7 +94,7 @@ export function TripCard({
         <div className="w-full flex-1 space-y-3">
           <div className="flex items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2">
-              {<span className={`rounded-md px-2.5 py-1 text-xs font-bold ${isVip ? "bg-[#0b2b55] text-white" : "bg-slate-100 text-slate-600"}`}>{typeLabel}</span>}
+              <span className={`rounded-md px-2.5 py-1 text-xs font-bold ${isVip ? "bg-[#0b2b55] text-white" : "bg-slate-100 text-slate-600"}`}>{typeLabel}</span>
               {busNumber && <span className="text-xs text-gray-500">حافلة رقم: {busNumber}</span>}
               {companyName && <span className="text-xs font-medium text-gray-400">{companyName}</span>}
             </div>
