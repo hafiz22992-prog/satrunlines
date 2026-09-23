@@ -20,6 +20,7 @@ type TripCardTrip = {
   totalSeats: number;
   availableSeats: number;
   days?: string[];
+  tripType?: "economy" | "vip";
 };
 
 type TripCardProps = {
@@ -71,6 +72,8 @@ export function TripCard({
     : trip.from;
   const arrivalLabel = arrivalStation ? `${trip.to} (${arrivalStation})` : trip.to;
   const soldOut = trip.availableSeats <= 0;
+  const isVip = trip.tripType === "vip" || vip;
+  const typeLabel = isVip ? "VIP" : "اقتصادية";
 
   return (
     <article className="mb-4 overflow-hidden rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-all hover:shadow-md">
@@ -91,9 +94,7 @@ export function TripCard({
         <div className="w-full flex-1 space-y-3">
           <div className="flex items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2">
-              {vip && (
-                <span className="rounded-md bg-blue-900 px-2.5 py-1 text-xs font-bold text-white">VIP</span>
-              )}
+              {<span className={`rounded-md px-2.5 py-1 text-xs font-bold ${isVip ? "bg-[#0b2b55] text-white" : "bg-slate-100 text-slate-600"}`}>{typeLabel}</span>}
               {busNumber && <span className="text-xs text-gray-500">حافلة رقم: {busNumber}</span>}
               {companyName && <span className="text-xs font-medium text-gray-400">{companyName}</span>}
             </div>
