@@ -8,6 +8,17 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import "./index.css";
 
+function registerServiceWorker() {
+  if (!("serviceWorker" in navigator)) return;
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch((error) => {
+      console.warn("[PWA] تعذر تسجيل Service Worker:", error);
+    });
+  });
+}
+
+registerServiceWorker();
+
 const Landing = lazy(() => import("./pages/Landing.tsx"));
 const AuthPage = lazy(() => import("./pages/Auth.tsx"));
 const OwnerDashboard = lazy(() => import("./pages/OwnerDashboard.tsx"));
