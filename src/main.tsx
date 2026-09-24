@@ -7,6 +7,7 @@ import React, { StrictMode, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import "./index.css";
+import { PwaInstallPrompt } from "@/components/PwaInstallPrompt";
 
 function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
@@ -90,6 +91,7 @@ createRoot(document.getElementById("root")!).render(
           </Suspense>
         </BrowserRouter>
         <Toaster />
+        <PwaInstallPrompt />
       </ConvexAuthProvider>
     </RootErrorBoundary>
   </StrictMode>,
