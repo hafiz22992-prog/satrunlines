@@ -2,6 +2,7 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 import { v } from "convex/values";
 import { mutation, query, QueryCtx } from "./_generated/server";
 import { resolveRole, RoleInfo } from "./roles";
+import { tripTypeValidator } from "./schema";
 import type { Doc, Id } from "./_generated/dataModel";
 
 /**
@@ -29,6 +30,7 @@ export type TripSeed = {
   totalSeats: number;
   availableSeats: number;
   days: string[];
+  tripType?: "economy" | "vip";
 };
 
 /** كتالوج الرحلات الافتتاحي — مواعيد وأسعار تقريبية واقعية بالريال السعودي. */
@@ -196,6 +198,7 @@ export const create = mutation({
     price: v.number(),
     totalSeats: v.number(),
     days: v.array(v.string()),
+    tripType: v.optional(tripTypeValidator),
   },
   handler: async (ctx, args) => {
     const manager = await getManager(ctx);
@@ -223,6 +226,7 @@ export const create = mutation({
       totalSeats: args.totalSeats,
       availableSeats: args.totalSeats, // رحلة جديدة تبدأ بكامل مقاعدها
       days: args.days,
+      tripType: args.tripType ?? "economy",
       routeId: args.routeId,
     });
     return { created: id };
@@ -245,6 +249,7 @@ export const update = mutation({
     price: v.optional(v.number()),
     totalSeats: v.optional(v.number()),
     days: v.optional(v.array(v.string())),
+    tripType: v.optional(tripTypeValidator),
     active: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
@@ -274,6 +279,7 @@ export const update = mutation({
       price?: number;
       totalSeats?: number;
       days?: string[];
+      tripType?: "economy" | "vip";
       routeId?: Id<"routes">;
       active?: boolean;
     } = {};
@@ -310,6 +316,9 @@ export const update = mutation({
     }
     if (args.days !== undefined) {
       patch.days = args.days;
+    }
+    if (args.tripType !== undefined) {
+      patch.tripType = args.tripType;
     }
     if (args.active !== undefined) {
       patch.active = args.active;

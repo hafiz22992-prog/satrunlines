@@ -81,6 +81,18 @@ export const COMPANY_STATUSES = {
   INACTIVE: "inactive",
 } as const;
 
+/** نوع الرحلة: اقتصادية أو VIP. */
+export const TRIP_TYPES = {
+  ECONOMY: "economy",
+  VIP: "vip",
+} as const;
+
+export const tripTypeValidator = v.union(
+  v.literal(TRIP_TYPES.ECONOMY),
+  v.literal(TRIP_TYPES.VIP),
+);
+export type TripType = Infer<typeof tripTypeValidator>;
+
 export const companyStatusValidator = v.union(
   v.literal(COMPANY_STATUSES.ACTIVE),
   v.literal(COMPANY_STATUSES.INACTIVE),
@@ -231,6 +243,7 @@ const schema = defineSchema(
       totalSeats: v.number(),
       availableSeats: v.number(),
       days: v.array(v.string()),
+      tripType: v.optional(tripTypeValidator), // الرحلات القديمة = اقتصادية افتراضياً
       routeId: v.optional(v.id("routes")),
       active: v.optional(v.boolean()),
     }).index("by_company", ["companyId"]),
