@@ -179,7 +179,7 @@ export default function CustomerHome() {
           ) : featuredTrips.length === 0 ? (
             <div className="rounded-[24px] border border-slate-200 bg-white p-8 text-center text-sm font-bold text-slate-500">لا توجد رحلات منشورة حالياً.</div>
           ) : (
-            <div className="grid gap-4">{featuredTrips.map((trip) => <TripCard key={trip._id} trip={trip} companyName={companies?.find((company) => company.slug === trip.companyId)?.name} vip={trip.totalSeats <= 30} />)}</div>
+            <div className="grid gap-4">{featuredTrips.map((trip) => <TripCard key={trip._id} trip={trip} companyName={companies?.find((company) => company.slug === trip.companyId)?.name} vip={trip.tripType === "vip"} />)}</div>
           )}
         </section>
 

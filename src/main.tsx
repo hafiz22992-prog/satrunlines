@@ -7,6 +7,18 @@ import React, { StrictMode, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import "./index.css";
+import { PwaInstallPrompt } from "@/components/PwaInstallPrompt";
+
+function registerServiceWorker() {
+  if (!("serviceWorker" in navigator)) return;
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch((error) => {
+      console.warn("[PWA] تعذر تسجيل Service Worker:", error);
+    });
+  });
+}
+
+registerServiceWorker();
 
 const Landing = lazy(() => import("./pages/Landing.tsx"));
 const AuthPage = lazy(() => import("./pages/Auth.tsx"));
@@ -79,6 +91,7 @@ createRoot(document.getElementById("root")!).render(
           </Suspense>
         </BrowserRouter>
         <Toaster />
+        <PwaInstallPrompt />
       </ConvexAuthProvider>
     </RootErrorBoundary>
   </StrictMode>,
