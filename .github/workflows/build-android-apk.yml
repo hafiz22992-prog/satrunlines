@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - build/android-apk
+      - feature/seo-smart-app
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
