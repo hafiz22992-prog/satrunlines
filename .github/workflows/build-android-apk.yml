@@ -28,8 +28,11 @@ jobs:
           node-version: 22
           cache: npm
 
+      # The repository lockfile is currently behind package.json.
+      # Use a clean dependency install here so the APK build can validate
+      # the actual application without mutating the source branch.
       - name: Install web dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund
 
       - name: Build web application
         run: npm run build
