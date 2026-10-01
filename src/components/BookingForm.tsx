@@ -883,6 +883,29 @@ export function BookingForm({
             </p>
           </div>
 
+          {/* ===== تنبيه الأمتعة والممنوعات ===== */}
+          <div className="rounded-xl border border-amber-300 bg-amber-50/80 p-4" role="note">
+            <div className="flex items-start gap-3">
+              <ShieldAlert className="mt-0.5 size-5 shrink-0 text-amber-700" />
+              <div className="min-w-0">
+                <p className="text-sm font-extrabold text-amber-900">تنبيه مهم بشأن الأمتعة</p>
+                <p className="mt-1 text-xs leading-5 text-amber-900/90">
+                  حفاظاً على سلامة الرحلة والتزاماً بتعليمات شركة النقل، يرجى الالتزام بالتالي:
+                </p>
+                <ul className="mt-2 list-disc space-y-1 pr-5 text-xs leading-5 text-amber-900/90">
+                  <li>يُسمح لكل راكب بعدد <strong>حقيبتين سفر فقط</strong>.</li>
+                  <li>ألا يتجاوز <strong>إجمالي وزن الحقيبتين 50 كيلوغراماً لكل راكب</strong>.</li>
+                  <li>لا يُسمح بنقل <strong>الشاشات بجميع أنواعها</strong>.</li>
+                  <li>لا يُسمح بنقل <strong>البراميل</strong>.</li>
+                  <li>لا يُسمح بنقل <strong>الطرابيل</strong>.</li>
+                </ul>
+                <p className="mt-2 text-[11px] font-semibold leading-5 text-amber-900/90">
+                  قد ترفض شركة النقل أي أمتعة أو مواد مخالفة لهذه التعليمات عند التسليم أو الصعود.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* ===== القيمة المتوقعة ===== */}
           <div>
             <h3 className="mb-3 flex items-center gap-2 text-sm font-bold">

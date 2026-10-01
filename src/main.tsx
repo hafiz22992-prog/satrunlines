@@ -7,6 +7,18 @@ import React, { StrictMode, lazy, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 import "./index.css";
+import { PwaInstallPrompt } from "@/components/PwaInstallPrompt";
+import { SeoManager } from "@/components/SeoManager";
+
+function registerServiceWorker() {
+  if (!("serviceWorker" in navigator)) return;
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch((error) => {
+      console.warn("[PWA] تعذر تسجيل Service Worker:", error);
+    });
+  });
+}
+registerServiceWorker();
 
 const Landing = lazy(() => import("./pages/Landing.tsx"));
 const AuthPage = lazy(() => import("./pages/Auth.tsx"));
@@ -20,13 +32,11 @@ const CustomerContact = lazy(() => import("./pages/CustomerContact.tsx"));
 const OwnerLogin = lazy(() => import("./pages/OwnerLogin.tsx"));
 const CompanyLogin = lazy(() => import("./pages/CompanyLogin.tsx"));
 const CompanyPage = lazy(() => import("./pages/CompanyPage.tsx"));
+const SeoTravelPage = lazy(() => import("./pages/SeoTravelPage.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const Callback = lazy(() => import("./pages/Callback.tsx"));
 
-function RouteLoading() {
-  return <div className="min-h-screen flex items-center justify-center"><div className="animate-pulse text-muted-foreground">Loading...</div></div>;
-}
-
+function RouteLoading() { return <div className="min-h-screen flex items-center justify-center"><div className="animate-pulse text-muted-foreground">Loading...</div></div>; }
 class RootErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; message: string; stack: string }> {
   state = { hasError: false, message: "", stack: "" };
   static getDerivedStateFromError(error: Error) { return { hasError: true, message: error.message || "Unknown runtime error", stack: error.stack || "" }; }
@@ -36,7 +46,6 @@ class RootErrorBoundary extends React.Component<{ children: React.ReactNode }, {
     return this.props.children;
   }
 }
-
 class RouteErrorBoundary extends React.Component<{ children: React.ReactNode; routeName: string }, { hasError: boolean; message: string }> {
   state = { hasError: false, message: "" };
   static getDerivedStateFromError(error: Error) { return { hasError: true, message: error.message || "خطأ غير معروف" }; }
@@ -46,27 +55,23 @@ class RouteErrorBoundary extends React.Component<{ children: React.ReactNode; ro
     return this.props.children;
   }
 }
-
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
-
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RootErrorBoundary>
       <ConvexAuthProvider client={convex}>
         <BrowserRouter>
+          <SeoManager />
           <Suspense fallback={<RouteLoading />}>
             <Routes>
-              {/* الصفحة العامة الرئيسية تستخدم تجربة المسافر الموحدة نفسها، حتى لا تظهر نسخة قديمة مختلفة على النطاق الأساسي. */}
               <Route path="/" element={<RouteErrorBoundary routeName="/"><CustomerHome /></RouteErrorBoundary>} />
               <Route path="/callback" element={<Callback />} />
-
-              {/* تجربة المسافر موزعة على صفحات مستقلة مع أسماء واضحة في شريط التنقل. */}
               <Route path="/customer" element={<RouteErrorBoundary routeName="/customer"><CustomerHome /></RouteErrorBoundary>} />
               <Route path="/customer/trips" element={<RouteErrorBoundary routeName="/customer/trips"><CustomerTrips /></RouteErrorBoundary>} />
               <Route path="/customer/companies" element={<RouteErrorBoundary routeName="/customer/companies"><CustomerCompanies /></RouteErrorBoundary>} />
               <Route path="/customer/booking" element={<RouteErrorBoundary routeName="/customer/booking"><CustomerBooking /></RouteErrorBoundary>} />
               <Route path="/customer/contact" element={<RouteErrorBoundary routeName="/customer/contact"><CustomerContact /></RouteErrorBoundary>} />
-
+              <Route path="/travel/:slug" element={<RouteErrorBoundary routeName="/travel/:slug"><SeoTravelPage /></RouteErrorBoundary>} />
               <Route path="/auth" element={<AuthPage redirectAfterAuth="/dashboard" />} />
               <Route path="/company/auth" element={<RouteErrorBoundary routeName="/company/auth"><CompanyLogin /></RouteErrorBoundary>} />
               <Route path="/company/:slug" element={<RouteErrorBoundary routeName="/company/:slug"><CompanyPage /></RouteErrorBoundary>} />
@@ -79,6 +84,7 @@ createRoot(document.getElementById("root")!).render(
           </Suspense>
         </BrowserRouter>
         <Toaster />
+        <PwaInstallPrompt />
       </ConvexAuthProvider>
     </RootErrorBoundary>
   </StrictMode>,

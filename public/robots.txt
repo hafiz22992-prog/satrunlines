@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /auth
+Disallow: /callback
+Disallow: /dashboard
+Disallow: /company
+Disallow: /owner
+
+Sitemap: https://www.satrunlines.com/sitemap.xml
