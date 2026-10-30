@@ -14,6 +14,7 @@ import type * as auth_emailOtp from "../auth/emailOtp.js";
 import type * as bankAccounts from "../bankAccounts.js";
 import type * as bookings from "../bookings.js";
 import type * as companies from "../companies.js";
+import type * as companyRegistrationRequests from "../companyRegistrationRequests.js";
 import type * as companyEmails from "../companyEmails.js";
 import type * as gateway from "../gateway.js";
 import type * as http from "../http.js";
@@ -39,6 +40,7 @@ declare const fullApi: ApiFromModules<{
   bankAccounts: typeof bankAccounts;
   bookings: typeof bookings;
   companies: typeof companies;
+  companyRegistrationRequests: typeof companyRegistrationRequests;
   companyEmails: typeof companyEmails;
   gateway: typeof gateway;
   http: typeof http;
