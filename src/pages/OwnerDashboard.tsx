@@ -15,13 +15,14 @@ import { LogoUploader } from "@/components/LogoUploader";
 import { ReportsSection } from "@/components/ReportsSection";
 import { RoutesManager } from "@/components/RoutesManager";
 import { TicketPreview } from "@/components/TicketPreview";
+import { CompanyRegistrationRequests } from "@/components/CompanyRegistrationRequests";
 import { TripsManager } from "@/components/TripsManager";
 import { useRole } from "@/components/RoleGate";
 import { Badge } from "@/components/ui/badge";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import {
-  BarChart3, Building2, Bus, CalendarCheck2, CreditCard,
+  BarChart3, Building2, Bus, CalendarCheck2, CreditCard, Bell,
   Image as ImageIcon, KeyRound, Landmark, LayoutDashboard, MapPin, Phone,
   Route as RouteIcon, Settings, ShieldCheck, Ticket, Users, UserCog, Wallet,
 } from "lucide-react";
@@ -67,6 +68,7 @@ export default function OwnerDashboard() {
     <div className="space-y-10">
       <div>
         <SectionHeader icon={Building2} title="إدارة الشركات" desc="أضف شركة جديدة، فعّلها/أوقفها" />
+        <div className="mb-8"><SectionHeader icon={Bell} title="طلبات انضمام الشركات" desc="طلبات التسجيل الجديدة ومراجعتها قبل اعتماد أي شركة" /><CompanyRegistrationRequests /></div>
         <CompaniesManager />
       </div>
       <div>
