@@ -13,6 +13,7 @@ const AuthPage = lazy(() => import("./pages/Auth.tsx"));
 const OwnerDashboard = lazy(() => import("./pages/OwnerDashboard.tsx"));
 const CompanyDashboard = lazy(() => import("./pages/CompanyDashboard.tsx"));
 const CustomerHome = lazy(() => import("./pages/CustomerHome.tsx"));
+const CompanyRegistration = lazy(() => import("./pages/CompanyRegistration.tsx"));
 const CustomerTrips = lazy(() => import("./pages/CustomerTrips.tsx"));
 const CustomerCompanies = lazy(() => import("./pages/CustomerCompanies.tsx"));
 const CustomerBooking = lazy(() => import("./pages/CustomerBooking.tsx"));
@@ -61,7 +62,8 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/callback" element={<Callback />} />
 
               {/* تجربة المسافر موزعة على صفحات مستقلة مع أسماء واضحة في شريط التنقل. */}
-              <Route path="/customer" element={<RouteErrorBoundary routeName="/customer"><CustomerHome /></RouteErrorBoundary>} />
+              <Route path="/customer" element={<RouteErrorBoundary routeName="/customer"><CustomerHome /></RouteErrorBoundary} />
+              <Route path="/company/register" element={<RouteErrorBoundary routeName="/company/register"><CompanyRegistration /></RouteErrorBoundary>} />
               <Route path="/customer/trips" element={<RouteErrorBoundary routeName="/customer/trips"><CustomerTrips /></RouteErrorBoundary>} />
               <Route path="/customer/companies" element={<RouteErrorBoundary routeName="/customer/companies"><CustomerCompanies /></RouteErrorBoundary>} />
               <Route path="/customer/booking" element={<RouteErrorBoundary routeName="/customer/booking"><CustomerBooking /></RouteErrorBoundary>} />
