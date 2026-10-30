@@ -43,7 +43,7 @@ export default function CompanyRegistration() {
     </div> : <>
       <div className="mb-5 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600">سيُربط الطلب بالبريد: <b dir="ltr">{user?.email}</b></div>
       {mine?.filter((item) => item.status === "pending" || item.status === "needs_info").map((item) => <div key={item._id} className="mb-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm"><b>لديك طلب قيد المتابعة: {item.companyName}</b><p className="mt-1">الحالة: {item.status === "pending" ? "قيد المراجعة" : "يتطلب استكمال معلومات"}</p>{item.reviewNote && <p className="mt-1">ملاحظة المنصة: {item.reviewNote}</p>}</div>)}
-      {!mine?.some((item) => item.status === "pending" || item.status === "needs_info") && <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border bg-white p-6 shadow-sm sm:p-8">
+      {mine !== undefined && !mine.some((item) => item.status === "pending" || item.status === "needs_info") && <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border bg-white p-6 shadow-sm sm:p-8">
         <div className="grid gap-4 sm:grid-cols-2">
           {([["companyName","اسم شركة النقل"],["contactName","اسم المسؤول"],["phone","رقم الجوال"],["city","المدينة"],["commercialRegistrationNumber","رقم السجل التجاري (اختياري)"],["licenseNumber","رقم ترخيص النقل (اختياري)"]] as const).map(([key,label]) => <div key={key} className="space-y-2"><Label htmlFor={key}>{label}{["companyName","contactName","phone","city"].includes(key) && " *"}</Label><Input id={key} value={form[key]} onChange={(e) => update(key,e.target.value)} required={["companyName","contactName","phone","city"].includes(key)} /></div>)}
         </div>
