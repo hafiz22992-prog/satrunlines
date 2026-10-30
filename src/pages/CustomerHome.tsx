@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useLocations } from "@/hooks/use-locations";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
-import { ArrowLeft, BusFront, CalendarDays, CheckCircle2, ChevronLeft, Compass, MapPin, Search, ShieldCheck, Star, Ticket, Users } from "lucide-react";
+import { ArrowLeft, BusFront, CalendarDays, CheckCircle2, ChevronLeft, Compass, MapPin, Search, ShieldCheck, Star, Ticket, Users, Building2 } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router";
 import { CustomerLayout } from "@/components/CustomerLayout";
@@ -181,6 +181,16 @@ export default function CustomerHome() {
           ) : (
             <div className="grid gap-4">{featuredTrips.map((trip) => <TripCard key={trip._id} trip={trip} companyName={companies?.find((company) => company.slug === trip.companyId)?.name} vip={trip.totalSeats <= 30} />)}</div>
           )}
+        </section>
+
+        <section className="mx-auto max-w-7xl px-4 pb-12 sm:px-6">
+          <Link to="/company/register" className="group flex flex-col gap-5 rounded-[26px] border border-[#d8e2ef] bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-[#d6a13c] hover:shadow-xl sm:flex-row sm:items-center sm:justify-between sm:p-8">
+            <div className="flex items-start gap-4">
+              <span className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-[#f8f4e9] text-[#9a6c1e]"><Building2 className="size-7" /></span>
+              <div><p className="text-lg font-black text-[#082750]">هل أنت صاحب شركة نقل؟</p><p className="mt-1 text-sm leading-7 text-slate-600">انضم إلى منصة خطوط زحل، وسجّل بيانات شركتك ليراجع فريق المنصة طلبك.</p></div>
+            </div>
+            <span className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#082750] px-6 py-3 text-sm font-black text-white transition group-hover:bg-[#123d72]">سجّل شركتك معنا <ArrowLeft className="size-4" /></span>
+          </Link>
         </section>
 
         <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6">

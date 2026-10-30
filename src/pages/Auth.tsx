@@ -25,7 +25,9 @@ interface AuthProps {
  */
 function dashboardDestination(searchParams: URLSearchParams): string {
   const returnTo = searchParams.get("returnTo");
-  if (returnTo && returnTo.startsWith("/")) {
+  if (returnTo && returnTo.startsWith("/") && !returnTo.startsWith("//")) {
+    // Keep the public company application flow after OTP verification.
+    if (returnTo === "/company/register") return returnTo;
     try {
       const url = new URL(returnTo, window.location.origin);
       const params = url.searchParams.toString();

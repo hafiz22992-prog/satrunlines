@@ -15,13 +15,14 @@ import { LogoUploader } from "@/components/LogoUploader";
 import { ReportsSection } from "@/components/ReportsSection";
 import { RoutesManager } from "@/components/RoutesManager";
 import { TicketPreview } from "@/components/TicketPreview";
+import { CompanyRegistrationRequests } from "@/components/CompanyRegistrationRequests";
 import { TripsManager } from "@/components/TripsManager";
 import { useRole } from "@/components/RoleGate";
 import { Badge } from "@/components/ui/badge";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import {
-  BarChart3, Building2, Bus, CalendarCheck2, CreditCard,
+  BarChart3, Building2, Bus, CalendarCheck2, CreditCard, Bell,
   Image as ImageIcon, KeyRound, Landmark, LayoutDashboard, MapPin, Phone,
   Route as RouteIcon, Settings, ShieldCheck, Ticket, Users, UserCog, Wallet,
 } from "lucide-react";
@@ -50,6 +51,8 @@ export default function OwnerDashboard() {
   const accounting = useQuery(api.accounting.summary);
   const companiesList = useQuery(api.companies.list);
   const usersList = useQuery(api.users.list);
+  const companyRequests = useQuery(api.companyRegistrationRequests.listForOwner);
+  const pendingCompanyRequests = companyRequests?.filter((item) => item.status === "pending" || item.status === "needs_info").length ?? 0;
 
   /* ── Tab 1 : نظرة عامة ── */
   const overviewContent = (
@@ -114,6 +117,14 @@ export default function OwnerDashboard() {
           </div>
         )}
       </div>
+    </div>
+  );
+
+  /* ── Tab : طلبات انضمام الشركات ── */
+  const companyRequestsContent = (
+    <div className="space-y-6">
+      <SectionHeader icon={Bell} title="طلبات انضمام الشركات" desc="إشعار فوري بالطلبات الجديدة ومراجعتها قبل اعتماد أي شركة" />
+      <CompanyRegistrationRequests />
     </div>
   );
 
@@ -272,6 +283,7 @@ export default function OwnerDashboard() {
   const tabs = [
     { title: "نظرة عامة", value: "overview", icon: LayoutDashboard, content: overviewContent },
     { title: "الشركات", value: "companies", icon: Building2, content: companiesContent },
+    { title: pendingCompanyRequests ? `طلبات الشركات (${pendingCompanyRequests})` : "طلبات الشركات", value: "company-requests", icon: Bell, content: companyRequestsContent },
     { title: "المسارات والرحلات", value: "routes", icon: RouteIcon, content: routesTripsContent },
     { title: "الحجوزات", value: "bookings", icon: CalendarCheck2, content: bookingsContent },
     { title: "المالية", value: "finance", icon: Landmark, content: financeContent },

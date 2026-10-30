@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { useConvexAuth } from "convex/react";
-import { LogOut, User, Ticket, CircleHelp } from "lucide-react";
+import { LogOut, User, Ticket, CircleHelp, Building2 } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 
 export function CustomerLayout({ children }: { children: React.ReactNode }) {
@@ -34,6 +34,12 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
           </nav>
 
           <div className="flex shrink-0 items-center gap-2">
+            <Button asChild size="sm" className="gap-1.5 rounded-xl bg-[#d6a13c] px-2.5 text-[11px] font-black text-[#071a3a] shadow-sm hover:bg-[#c58f2d] sm:px-3 sm:text-xs">
+              <Link to="/company/register" aria-label="هل أنت صاحب شركة نقل؟ سجّل شركتك">
+                <Building2 className="size-4" />
+                <span>هل أنت صاحب شركة نقل؟</span><span className="mr-1 rounded-md bg-[#082750]/10 px-1.5 py-1 text-[10px] font-black">اضغط هنا</span>
+              </Link>
+            </Button>
             <Link to="/customer/booking" className="hidden items-center gap-1.5 rounded-xl bg-[#f8f4e9] px-3 py-2 text-xs font-black text-[#082750] transition hover:bg-[#efe6cf] sm:flex">
               <Ticket className="size-4" />
               احجز رحلتك
@@ -71,6 +77,7 @@ export function CustomerLayout({ children }: { children: React.ReactNode }) {
               <Link to="/customer/trips" className="rounded-lg px-3 py-2 hover:bg-white/10 hover:text-white">الرحلات</Link>
               <Link to="/customer/booking" className="rounded-lg px-3 py-2 hover:bg-white/10 hover:text-white">احجز رحلتك</Link>
               <Link to="/customer/contact" className="rounded-lg px-3 py-2 hover:bg-white/10 hover:text-white"><CircleHelp className="ml-1 inline size-3.5" />المساعدة</Link>
+              <Link to="/company/register" className="rounded-lg px-3 py-2 text-[#e2b451] hover:bg-white/10 hover:text-white"><Building2 className="ml-1 inline size-3.5" />هل أنت صاحب شركة نقل؟ اضغط هنا</Link>
             </div>
           </div>
           <div className="mt-8 border-t border-white/10 pt-5 text-center">

@@ -289,6 +289,27 @@ const schema = defineSchema(
       .index("by_governorate", ["governorateId"])
       .index("by_country_name", ["country", "name"]),
 
+    // طلبات انضمام شركات النقل — منفصلة عن الشركات المعتمدة
+    companyRegistrationRequests: defineTable({
+      companyName: v.string(),
+      contactName: v.string(),
+      phone: v.string(),
+      email: v.string(),
+      city: v.string(),
+      address: v.optional(v.string()),
+      routes: v.string(),
+      commercialRegistrationNumber: v.optional(v.string()),
+      licenseNumber: v.optional(v.string()),
+      notes: v.optional(v.string()),
+      status: v.union(v.literal("pending"), v.literal("needs_info"), v.literal("approved"), v.literal("rejected")),
+      createdAt: v.number(),
+      updatedAt: v.number(),
+      reviewedAt: v.optional(v.number()),
+      reviewedBy: v.optional(v.id("users")),
+      reviewNote: v.optional(v.string()),
+      companySlug: v.optional(v.string()),
+    }).index("by_status", ["status"]).index("by_email", ["email"]).index("by_createdAt", ["createdAt"]),
+
     // ===== PHASE 2B — المسارات (Routes) =====
     routes: defineTable({
       companyId: v.id("companies"),
