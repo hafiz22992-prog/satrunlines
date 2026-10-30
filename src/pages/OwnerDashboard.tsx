@@ -51,6 +51,8 @@ export default function OwnerDashboard() {
   const accounting = useQuery(api.accounting.summary);
   const companiesList = useQuery(api.companies.list);
   const usersList = useQuery(api.users.list);
+  const companyRequests = useQuery(api.companyRegistrationRequests.listForOwner);
+  const pendingCompanyRequests = companyRequests?.filter((item) => item.status === "pending" || item.status === "needs_info").length ?? 0;
 
   /* ── Tab 1 : نظرة عامة ── */
   const overviewContent = (
@@ -68,7 +70,6 @@ export default function OwnerDashboard() {
     <div className="space-y-10">
       <div>
         <SectionHeader icon={Building2} title="إدارة الشركات" desc="أضف شركة جديدة، فعّلها/أوقفها" />
-        <div className="mb-8"><SectionHeader icon={Bell} title="طلبات انضمام الشركات" desc="طلبات التسجيل الجديدة ومراجعتها قبل اعتماد أي شركة" /><CompanyRegistrationRequests /></div>
         <CompaniesManager />
       </div>
       <div>
@@ -116,6 +117,14 @@ export default function OwnerDashboard() {
           </div>
         )}
       </div>
+    </div>
+  );
+
+  /* ── Tab : طلبات انضمام الشركات ── */
+  const companyRequestsContent = (
+    <div className="space-y-6">
+      <SectionHeader icon={Bell} title="طلبات انضمام الشركات" desc="إشعار فوري بالطلبات الجديدة ومراجعتها قبل اعتماد أي شركة" />
+      <CompanyRegistrationRequests />
     </div>
   );
 
@@ -274,6 +283,7 @@ export default function OwnerDashboard() {
   const tabs = [
     { title: "نظرة عامة", value: "overview", icon: LayoutDashboard, content: overviewContent },
     { title: "الشركات", value: "companies", icon: Building2, content: companiesContent },
+    { title: pendingCompanyRequests ? `طلبات الشركات (${pendingCompanyRequests})` : "طلبات الشركات", value: "company-requests", icon: Bell, content: companyRequestsContent },
     { title: "المسارات والرحلات", value: "routes", icon: RouteIcon, content: routesTripsContent },
     { title: "الحجوزات", value: "bookings", icon: CalendarCheck2, content: bookingsContent },
     { title: "المالية", value: "finance", icon: Landmark, content: financeContent },
