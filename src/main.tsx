@@ -62,7 +62,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/callback" element={<Callback />} />
 
               {/* تجربة المسافر موزعة على صفحات مستقلة مع أسماء واضحة في شريط التنقل. */}
-              <Route path="/customer" element={<RouteErrorBoundary routeName="/customer"><CustomerHome /></RouteErrorBoundary} />
+              <Route path="/customer" element={<RouteErrorBoundary routeName="/customer"><CustomerHome /></RouteErrorBoundary>} />
               <Route path="/company/register" element={<RouteErrorBoundary routeName="/company/register"><CompanyRegistration /></RouteErrorBoundary>} />
               <Route path="/customer/trips" element={<RouteErrorBoundary routeName="/customer/trips"><CustomerTrips /></RouteErrorBoundary>} />
               <Route path="/customer/companies" element={<RouteErrorBoundary routeName="/customer/companies"><CustomerCompanies /></RouteErrorBoundary>} />
